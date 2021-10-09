@@ -1,0 +1,7 @@
+APIkey d9a050a2b06b9d83d847f5145d5c9a01
+Token 92b59d9c284cecc282dbbc981c376919b95eac07e8a53cb2ae13926f371c0aa8
+Board uZFHCkJo
+
+curl 'https://api.trello.com/1/boards/uZFHCkJo?key=d9a050a2b06b9d83d847f5145d5c9a01&token=92b59d9c284cecc282dbbc981c376919b95eac07e8a53cb2ae13926f371c0aa8'
+
+curl 'https://api.trello.com/1/boards/uZFHCkJo?fields=name&key=d9a050a2b06b9d83d847f5145d5c9a01&token=92b59d9c284cecc282dbbc981c376919b95eac07e8a53cb2ae13926f371c0aa8'
