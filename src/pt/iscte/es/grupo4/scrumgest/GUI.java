@@ -14,9 +14,18 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.AbstractListModel;
 import javax.swing.border.BevelBorder;
 import java.awt.Component;
+import java.awt.EventQueue;
+
 import javax.swing.Box;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.JButton;
+import java.awt.Insets;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.FlowLayout;
 
 @SuppressWarnings("serial")
 public class GUI extends JFrame {
@@ -28,9 +37,10 @@ public class GUI extends JFrame {
 	 * Create the frame.
 	 */
 	public GUI() {
+		setTitle("SCRUM Gest");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 368, 221);
+		setBounds(100, 100, 418, 217);
 		contentPane = new JPanel();
 		setContentPane(contentPane);
 		contentPane.setLayout(new GridLayout(0, 2, 0, 0));
@@ -40,7 +50,7 @@ public class GUI extends JFrame {
 		panel.setLayout(null);
 
 		Panel panel_3 = new Panel();
-		panel_3.setBounds(0, 0, 177, 57);
+		panel_3.setBounds(0, 0, 194, 49);
 		panel.add(panel_3);
 
 		JLabel lblNewLabel = new JLabel("Project Identification");
@@ -51,11 +61,11 @@ public class GUI extends JFrame {
 		textField.setEditable(false);
 		textField.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_3.add(textField);
-		textField.setColumns(16);
+		textField.setColumns(15);
 		textField.setText("ES-LETI-1Sem-2021-Grupo4");
 
 		Panel panel_2 = new Panel();
-		panel_2.setBounds(0, 50, 177, 136);
+		panel_2.setBounds(0, 58, 194, 111);
 		panel.add(panel_2);
 
 		JLabel lblNewLabel_1 = new JLabel("Group Identification");
@@ -79,29 +89,81 @@ public class GUI extends JFrame {
 
 		list.setBackground(Color.WHITE);
 		panel_2.add(list);
-
+		
+		Component verticalStrut = Box.createVerticalStrut(20);
+		verticalStrut.setBounds(190, 0, 12, 190);
+		panel.add(verticalStrut);
+		
 		Component horizontalStrut = Box.createHorizontalStrut(20);
-		horizontalStrut.setBounds(0, 45, 177, 0);
+		horizontalStrut.setBounds(0, 55, 190, 1);
 		panel.add(horizontalStrut);
 
 		JPanel panel_1 = new JPanel();
 		contentPane.add(panel_1);
-		GridBagLayout gbl_panel_1 = new GridBagLayout();
-		gbl_panel_1.columnWidths = new int[] { 46, 84, 0 };
-		gbl_panel_1.rowHeights = new int[] { 20, 0, 0 };
-		gbl_panel_1.columnWeights = new double[] { 0.0, 0.0, Double.MIN_VALUE };
-		gbl_panel_1.rowWeights = new double[] { 0.0, 0.0, Double.MIN_VALUE };
-		panel_1.setLayout(gbl_panel_1);
+		panel_1.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
 		JComboBox<String> comboBox = new JComboBox<String>();
+
 		comboBox.setModel(
 				new DefaultComboBoxModel<String>(new String[] { "Sprint Data", "Trello Data", "Github Data" }));
 		comboBox.setBackground(Color.WHITE);
-		GridBagConstraints gbc_comboBox = new GridBagConstraints();
-		gbc_comboBox.anchor = GridBagConstraints.NORTHWEST;
-		gbc_comboBox.gridx = 1;
-		gbc_comboBox.gridy = 1;
-		panel_1.add(comboBox, gbc_comboBox);
+		panel_1.add(comboBox);
+
+		JButton btnNewButton = new JButton("View");
+		btnNewButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int key = comboBox.getSelectedIndex();
+				switch (key) {
+
+				case 0: {
+					EventQueue.invokeLater(new Runnable() {
+						public void run() {
+							try {
+								SubFrame1 frame1 = new SubFrame1();
+								frame1.setVisible(true);
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
+					});
+					break;
+				}
+				case 1: {
+					EventQueue.invokeLater(new Runnable() {
+						public void run() {
+							try {
+								SubFrame2 frame2 = new SubFrame2();
+								frame2.setVisible(true);
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
+					});
+					break;
+				}
+				case 2: {
+					EventQueue.invokeLater(new Runnable() {
+						public void run() {
+							try {
+								SubFrame3 frame3 = new SubFrame3();
+								frame3.setVisible(true);
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
+					});
+					break;
+				}
+				}
+
+			}
+		});
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		panel_1.add(btnNewButton);
 
 	}
 
