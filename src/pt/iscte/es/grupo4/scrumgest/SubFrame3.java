@@ -1,7 +1,6 @@
 package pt.iscte.es.grupo4.scrumgest;
 
 import java.awt.BorderLayout;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -12,6 +11,8 @@ import javax.swing.Box;
 import javax.swing.JTextArea;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
+import javax.swing.border.TitledBorder;
+import javax.swing.border.BevelBorder;
 
 @SuppressWarnings("serial")
 public class SubFrame3 extends JFrame {
@@ -51,6 +52,7 @@ public class SubFrame3 extends JFrame {
 		panel_4.setLayout(new BorderLayout(0, 0));
 
 		JTextArea textArea = new JTextArea();
+		textArea.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		JScrollPane scrollPane = new JScrollPane(textArea);
 		textArea.setEditable(false);
 		textArea.setLineWrap(true);
