@@ -13,6 +13,7 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.border.TitledBorder;
 import javax.swing.border.BevelBorder;
+import java.awt.Font;
 
 @SuppressWarnings("serial")
 public class SubFrame3 extends JFrame {
@@ -30,14 +31,14 @@ public class SubFrame3 extends JFrame {
 		setResizable(false);
 		setTitle("Github Data");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 478, 300);
+		setBounds(100, 100, 490, 308);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
 		JPanel panel = new JPanel();
-		panel.setBounds(0, 0, 143, 261);
+		panel.setBounds(10, 0, 143, 261);
 		contentPane.add(panel);
 		panel.setLayout(new BorderLayout(0, 0));
 
@@ -45,6 +46,7 @@ public class SubFrame3 extends JFrame {
 		panel.add(panel_3, BorderLayout.NORTH);
 
 		JLabel lblNewLabel = new JLabel("Project Description");
+		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 11));
 		panel_3.add(lblNewLabel);
 
 		JPanel panel_4 = new JPanel();
@@ -52,6 +54,7 @@ public class SubFrame3 extends JFrame {
 		panel_4.setLayout(new BorderLayout(0, 0));
 
 		JTextArea textArea = new JTextArea();
+		textArea.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		textArea.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		JScrollPane scrollPane = new JScrollPane(textArea);
 		textArea.setEditable(false);
@@ -61,11 +64,11 @@ public class SubFrame3 extends JFrame {
 		panel_4.add(scrollPane, BorderLayout.CENTER);
 
 		Component verticalStrut = Box.createVerticalStrut(20);
-		verticalStrut.setBounds(145, 0, 12, 261);
+		verticalStrut.setBounds(155, 0, 12, 261);
 		contentPane.add(verticalStrut);
 
 		JPanel panel_1 = new JPanel();
-		panel_1.setBounds(153, 0, 143, 261);
+		panel_1.setBounds(166, 0, 143, 261);
 		contentPane.add(panel_1);
 		panel_1.setLayout(new BorderLayout(0, 0));
 
@@ -73,6 +76,7 @@ public class SubFrame3 extends JFrame {
 		panel_1.add(panel_5, BorderLayout.NORTH);
 
 		JLabel lblNewLabel_1 = new JLabel("Master branch's tags");
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 11));
 		panel_5.add(lblNewLabel_1);
 
 		JPanel panel_6 = new JPanel();
@@ -84,11 +88,11 @@ public class SubFrame3 extends JFrame {
 		panel_6.add(list);
 
 		Component verticalStrut_1 = Box.createVerticalStrut(20);
-		verticalStrut_1.setBounds(298, 0, 0, 261);
+		verticalStrut_1.setBounds(309, 0, 0, 261);
 		contentPane.add(verticalStrut_1);
 
 		JPanel panel_2 = new JPanel();
-		panel_2.setBounds(306, 0, 143, 261);
+		panel_2.setBounds(321, 0, 143, 261);
 		contentPane.add(panel_2);
 		panel_2.setLayout(new BorderLayout(0, 0));
 
@@ -96,6 +100,7 @@ public class SubFrame3 extends JFrame {
 		panel_2.add(panel_7, BorderLayout.NORTH);
 
 		JLabel lblNewLabel_2 = new JLabel("Commits");
+		lblNewLabel_2.setFont(new Font("Tahoma", Font.BOLD, 11));
 		panel_7.add(lblNewLabel_2);
 
 		JPanel panel_8 = new JPanel();
@@ -106,9 +111,5 @@ public class SubFrame3 extends JFrame {
 		list_1 = new JList<String>(model_1);
 
 		panel_8.add(list_1);
-
-		Component verticalStrut_2 = Box.createVerticalStrut(20);
-		verticalStrut_2.setBounds(450, 0, 0, 261);
-		contentPane.add(verticalStrut_2);
 	}
 }
