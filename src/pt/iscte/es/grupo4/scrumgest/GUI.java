@@ -27,6 +27,7 @@ import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.FlowLayout;
+import java.awt.Font;
 
 @SuppressWarnings("serial")
 public class GUI extends JFrame {
@@ -55,6 +56,7 @@ public class GUI extends JFrame {
 		panel.add(panel_3);
 
 		JLabel lblNewLabel = new JLabel("Project Identification");
+		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 11));
 		panel_3.add(lblNewLabel);
 
 		textField = new JTextField();
@@ -70,6 +72,7 @@ public class GUI extends JFrame {
 		panel.add(panel_2);
 
 		JLabel lblNewLabel_1 = new JLabel("Group Identification");
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 11));
 		panel_2.add(lblNewLabel_1);
 
 		JList<String> list = new JList<String>();
@@ -106,7 +109,7 @@ public class GUI extends JFrame {
 		JComboBox<String> comboBox = new JComboBox<String>();
 
 		comboBox.setModel(
-				new DefaultComboBoxModel<String>(new String[] { "Sprint Data", "Trello Data", "Github Data" }));
+				new DefaultComboBoxModel<String>(new String[] { "SPRINT Data", "Trello Data", "Github Data" }));
 		comboBox.setBackground(Color.WHITE);
 		panel_1.add(comboBox);
 
