@@ -12,26 +12,29 @@ import javax.swing.JTextArea;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.border.TitledBorder;
+
+import org.kohsuke.github.GHCommit;
+import org.kohsuke.github.GHRepository;
+
 import javax.swing.border.BevelBorder;
 import java.awt.Font;
 
 @SuppressWarnings("serial")
 public class SubFrame3 extends JFrame {
-
-	private JList<String> list;
-	private JList<String> list_1;
 	private DefaultListModel<String> model;
 	private DefaultListModel<String> model_1;
 	private JPanel contentPane;
+	private GHRepository repository;
 
 	/**
 	 * Create the frame.
 	 */
-	public SubFrame3() {
+	public SubFrame3(GHRepository repository) {
+		this.repository = repository;
 		setResizable(false);
 		setTitle("Github Data");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 490, 308);
+		setBounds(100, 100, 830, 306);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -68,7 +71,7 @@ public class SubFrame3 extends JFrame {
 		contentPane.add(verticalStrut);
 
 		JPanel panel_1 = new JPanel();
-		panel_1.setBounds(166, 0, 143, 261);
+		panel_1.setBounds(166, 0, 307, 260);
 		contentPane.add(panel_1);
 		panel_1.setLayout(new BorderLayout(0, 0));
 
@@ -81,18 +84,23 @@ public class SubFrame3 extends JFrame {
 
 		JPanel panel_6 = new JPanel();
 		panel_1.add(panel_6, BorderLayout.CENTER);
+		panel_6.setLayout(new BorderLayout(0, 0));
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		panel_6.add(scrollPane_1, BorderLayout.CENTER);
+		
 		model = new DefaultListModel<String>();
-		model.addElement("insert tags (String)");
-		list = new JList<String>(model);
-
-		panel_6.add(list);
+		JList list = new JList();
+		scrollPane_1.setViewportView(list);
+		list.setModel(model);
+		getCommits();
 
 		Component verticalStrut_1 = Box.createVerticalStrut(20);
-		verticalStrut_1.setBounds(309, 0, 0, 261);
+		verticalStrut_1.setBounds(483, 0, 0, 261);
 		contentPane.add(verticalStrut_1);
 
 		JPanel panel_2 = new JPanel();
-		panel_2.setBounds(321, 0, 143, 261);
+		panel_2.setBounds(505, 1, 313, 259);
 		contentPane.add(panel_2);
 		panel_2.setLayout(new BorderLayout(0, 0));
 
@@ -105,11 +113,22 @@ public class SubFrame3 extends JFrame {
 
 		JPanel panel_8 = new JPanel();
 		panel_2.add(panel_8, BorderLayout.CENTER);
+		panel_8.setLayout(new BorderLayout(0, 0));
+		
+		JScrollPane scrollPane_2 = new JScrollPane();
+		panel_8.add(scrollPane_2, BorderLayout.CENTER);
+		
+		JList list_1 = new JList();
+		scrollPane_2.setViewportView(list_1);
+		
+		model_1= new DefaultListModel<String>();
+	}
 
-		model_1 = new DefaultListModel<String>();
-		model_1.addElement("insert commits (String)");
-		list_1 = new JList<String>(model_1);
+	public void getCommits() {
+		
+		for (GHCommit commit : repository.listCommits()) {
+			model.addElement(commit.getSHA1());
 
-		panel_8.add(list_1);
+		}
 	}
 }

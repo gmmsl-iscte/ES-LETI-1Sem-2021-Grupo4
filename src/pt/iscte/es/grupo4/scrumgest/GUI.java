@@ -13,15 +13,34 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.AbstractListModel;
 import javax.swing.border.BevelBorder;
+
+import org.kohsuke.github.GHCommit;
+import org.kohsuke.github.GHMyself;
+import org.kohsuke.github.GHRepository;
+import org.kohsuke.github.GitHub;
+import org.kohsuke.github.GitHubBuilder;
+
+import com.julienvey.trello.Trello;
+import com.julienvey.trello.domain.*;
+import com.julienvey.trello.impl.TrelloImpl;
+import com.julienvey.trello.impl.http.ApacheHttpClient;
+
+import pt.iscte.es.grupo4.scrumgest.trello.DefaultTrelloAPISupplier;
+import pt.iscte.es.grupo4.scrumgest.trello.TrelloJavaWrapperTrelloAPI;
+
 import java.awt.Component;
 import java.awt.EventQueue;
-
 
 import javax.swing.Box;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import javax.swing.JButton;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
@@ -34,11 +53,20 @@ public class GUI extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textField;
+	Trello trelloApi;
+	HashMap<TList, Card> sprintAndCards;
+	List<TList> sprint;
+	List<Card> sprintCards;
+	GHRepository repository;
 
 	/**
 	 * Create the frame.
+	 * 
+	 * @throws IOException
 	 */
-	public GUI() {
+	public GUI() throws IOException {
+		sprint = new ArrayList<TList>();
+		sprintCards = new ArrayList<Card>();
 		setTitle("SCRUM Gest");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -46,6 +74,10 @@ public class GUI extends JFrame {
 		contentPane = new JPanel();
 		setContentPane(contentPane);
 		contentPane.setLayout(new GridLayout(0, 2, 0, 0));
+
+		TrelloConnect();
+		TrelloContents();
+		GitHubConnect();
 
 		JPanel panel = new JPanel();
 		contentPane.add(panel);
@@ -93,11 +125,11 @@ public class GUI extends JFrame {
 
 		list.setBackground(Color.WHITE);
 		panel_2.add(list);
-		
+
 		Component verticalStrut = Box.createVerticalStrut(20);
 		verticalStrut.setBounds(190, 0, 12, 190);
 		panel.add(verticalStrut);
-		
+
 		Component horizontalStrut = Box.createHorizontalStrut(20);
 		horizontalStrut.setBounds(0, 55, 190, 1);
 		panel.add(horizontalStrut);
@@ -124,7 +156,7 @@ public class GUI extends JFrame {
 					EventQueue.invokeLater(new Runnable() {
 						public void run() {
 							try {
-								SubFrame1 frame1 = new SubFrame1();
+								SubFrame1 frame1 = new SubFrame1(sprint, sprintCards);
 								frame1.setVisible(true);
 							} catch (Exception e) {
 								e.printStackTrace();
@@ -150,7 +182,7 @@ public class GUI extends JFrame {
 					EventQueue.invokeLater(new Runnable() {
 						public void run() {
 							try {
-								SubFrame3 frame3 = new SubFrame3();
+								SubFrame3 frame3 = new SubFrame3(repository);
 								frame3.setVisible(true);
 							} catch (Exception e) {
 								e.printStackTrace();
@@ -164,10 +196,56 @@ public class GUI extends JFrame {
 			}
 		});
 		btnNewButton.addActionListener(new ActionListener() {
+
 			public void actionPerformed(ActionEvent e) {
 			}
+
 		});
 		panel_1.add(btnNewButton);
+
+	}
+
+	public void TrelloConnect() {
+		trelloApi = new TrelloImpl("d9a050a2b06b9d83d847f5145d5c9a01",
+				"92b59d9c284cecc282dbbc981c376919b95eac07e8a53cb2ae13926f371c0aa8", new ApacheHttpClient());
+
+	}
+
+	public void TrelloContents() {
+
+		Board board;
+		List<Board> member = trelloApi.getMemberBoards("saragiraopereirafernandesdafonseca");
+
+		for (Board quadro : member) {
+//			String boardName = quadro.getName();
+			board = trelloApi.getBoard(quadro.getId());
+			List<TList> lists = board.fetchLists();
+			List<Card> cards = quadro.fetchCards();
+			for (TList lista : lists) {
+				for (Card card : cards) {
+					String idLista = card.getIdList();
+					String listName = lista.getName();
+					String listID = lista.getId();
+					if (listName.contains("SPRINT") && listID.equals(idLista)) {
+						sprint.add(lista);
+						sprintCards.add(card);
+					}
+				}
+			}
+		}
+
+	}
+
+	public void GitHubConnect() throws IOException {
+		GitHub github;
+
+		github = new GitHubBuilder().build().connectAnonymously();
+
+		repository = github.getRepository("gmmsl-iscte/ES-LETI-1Sem-2021-Grupo4");
+//		if(repository.getBranch(repository.getDefaultBranch()).
+		for (GHCommit commit : repository.listCommits()) {
+			System.out.println(commit.getSHA1());
+		}
 
 	}
 
