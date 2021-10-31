@@ -14,8 +14,6 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.AbstractListModel;
 import javax.swing.border.BevelBorder;
 
-import org.kohsuke.github.GHCommit;
-import org.kohsuke.github.GHMyself;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
 import org.kohsuke.github.GitHubBuilder;
@@ -25,15 +23,10 @@ import com.julienvey.trello.domain.*;
 import com.julienvey.trello.impl.TrelloImpl;
 import com.julienvey.trello.impl.http.ApacheHttpClient;
 
-import pt.iscte.es.grupo4.scrumgest.trello.DefaultTrelloAPISupplier;
-import pt.iscte.es.grupo4.scrumgest.trello.TrelloJavaWrapperTrelloAPI;
-
 import java.awt.Component;
 import java.awt.EventQueue;
 
 import javax.swing.Box;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
@@ -42,7 +35,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.JButton;
-import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.FlowLayout;
@@ -55,6 +47,7 @@ public class GUI extends JFrame {
 	private JTextField textField;
 	Trello trelloApi;
 	HashMap<TList, Card> sprintAndCards;
+	List<Card> cards;
 	List<TList> sprint;
 	List<Card> sprintCards;
 	GHRepository repository;
@@ -156,7 +149,7 @@ public class GUI extends JFrame {
 					EventQueue.invokeLater(new Runnable() {
 						public void run() {
 							try {
-								SubFrame1 frame1 = new SubFrame1(sprint, sprintCards);
+								SubFrame1 frame1 = new SubFrame1(cards);
 								frame1.setVisible(true);
 							} catch (Exception e) {
 								e.printStackTrace();
@@ -212,40 +205,19 @@ public class GUI extends JFrame {
 	}
 
 	public void TrelloContents() {
-
-		Board board;
 		List<Board> member = trelloApi.getMemberBoards("saragiraopereirafernandesdafonseca");
-
 		for (Board quadro : member) {
-//			String boardName = quadro.getName();
-			board = trelloApi.getBoard(quadro.getId());
-			List<TList> lists = board.fetchLists();
-			List<Card> cards = quadro.fetchCards();
-			for (TList lista : lists) {
-				for (Card card : cards) {
-					String idLista = card.getIdList();
-					String listName = lista.getName();
-					String listID = lista.getId();
-					if (listName.contains("SPRINT") && listID.equals(idLista)) {
-						sprint.add(lista);
-						sprintCards.add(card);
-					}
-				}
-			}
+			cards = quadro.fetchCards();
 		}
-
 	}
 
 	public void GitHubConnect() throws IOException {
 		GitHub github;
 
-		github = new GitHubBuilder().build().connectAnonymously();
+		new GitHubBuilder().build();
+		github = GitHub.connectAnonymously();
 
 		repository = github.getRepository("gmmsl-iscte/ES-LETI-1Sem-2021-Grupo4");
-//		if(repository.getBranch(repository.getDefaultBranch()).
-		for (GHCommit commit : repository.listCommits()) {
-			System.out.println(commit.getSHA1());
-		}
 
 	}
 

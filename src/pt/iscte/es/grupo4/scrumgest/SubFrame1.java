@@ -6,8 +6,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import java.awt.GridLayout;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import java.awt.Dimension;
@@ -17,11 +16,8 @@ import javax.swing.JTextArea;
 import java.awt.Font;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
-import java.awt.Component;
-import javax.swing.Box;
 import javax.swing.DefaultListModel;
 import javax.swing.border.BevelBorder;
-import javax.swing.JProgressBar;
 
 @SuppressWarnings("serial")
 public class SubFrame1 extends JFrame {
@@ -31,11 +27,8 @@ public class SubFrame1 extends JFrame {
 	JList<String> list_1;
 	DefaultListModel<String> model;
 	DefaultListModel<String> model1;
+	DefaultListModel<String> model2;
 	private JPanel contentPane;
-	JProgressBar progressBar;
-	JProgressBar progressBar1;
-	JProgressBar progressBar2;
-	JProgressBar progressBar3;
 	final int nMembers = 2;
 	int costSprint;
 	final int nSprints = 3;
@@ -43,26 +36,27 @@ public class SubFrame1 extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public SubFrame1(List<TList> sprint, List<Card> cards) {
-		this.sprint = sprint;
+	public SubFrame1(List<Card> cards) {
 		this.cards = cards;
 		model = new DefaultListModel<>();
 		model1 = new DefaultListModel<String>();
+		model2 = new DefaultListModel<String>();
 
 		DevelopedProducts();
-		SprintInfo();
+		SprintDuration();
+		MeetingText();
 
 		setResizable(false);
 		setTitle("SPRINT Data");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 924, 310);
+		setBounds(100, 100, 825, 645);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
 		JPanel panel = new JPanel();
-		panel.setBounds(10, 0, 611, 260);
+		panel.setBounds(10, 0, 787, 294);
 		contentPane.add(panel);
 		panel.setLayout(new BorderLayout(0, 0));
 
@@ -81,8 +75,6 @@ public class SubFrame1 extends JFrame {
 		JPanel panel_6 = new JPanel();
 		JPanel panel_7 = new JPanel();
 		JPanel panel_8 = new JPanel();
-		JPanel panel_9 = new JPanel();
-		JPanel panel_10 = new JPanel();
 
 		panel_3.add(panel_6);
 		panel_6.setLayout(new BorderLayout(0, 0));
@@ -101,10 +93,10 @@ public class SubFrame1 extends JFrame {
 		list = new JList<String>();
 		list.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		list.setModel(model);
+		JScrollPane scroll = new JScrollPane();
+		scroll.setViewportView(list);
+		panel_6.add(scroll, BorderLayout.CENTER);
 
-		// add stuff to list
-
-		panel_6.add(list, BorderLayout.CENTER);
 		panel_3.add(panel_7);
 		panel_7.setLayout(new BorderLayout(0, 0));
 
@@ -121,7 +113,9 @@ public class SubFrame1 extends JFrame {
 		list_1 = new JList<String>();
 		list_1.setModel(model1);
 		list_1.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		panel_7.add(list_1, BorderLayout.CENTER);
+		JScrollPane scroll1 = new JScrollPane();
+		scroll1.setViewportView(list_1);
+		panel_7.add(scroll1, BorderLayout.CENTER);
 		panel_3.add(panel_8);
 		panel_8.setLayout(new BorderLayout(0, 0));
 
@@ -135,47 +129,16 @@ public class SubFrame1 extends JFrame {
 		txtrSprintPlanning.setEditable(false);
 		panel_8.add(txtrSprintPlanning, BorderLayout.NORTH);
 
-		JScrollPane scrollPane = new JScrollPane();
-		panel_8.add(scrollPane, BorderLayout.CENTER);
+		JScrollPane scroll2 = new JScrollPane();
+		panel_8.add(scroll2, BorderLayout.CENTER);
 
-		JTextArea textArea = new JTextArea();
-		textArea.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		scrollPane.setViewportView(textArea);
-		panel_3.add(panel_9);
-		panel_9.setLayout(new BorderLayout(0, 0));
-
-		JTextArea txtrTotalHoursOf = new JTextArea();
-		txtrTotalHoursOf.setText("Total hours of work planned vs performed");
-		txtrTotalHoursOf.setFont(new Font("Tahoma", Font.BOLD, 11));
-		txtrTotalHoursOf.setWrapStyleWord(true);
-		txtrTotalHoursOf.setOpaque(false);
-		txtrTotalHoursOf.setLineWrap(true);
-		txtrTotalHoursOf.setFocusable(false);
-		txtrTotalHoursOf.setEditable(false);
-		panel_9.add(txtrTotalHoursOf, BorderLayout.NORTH);
-
-		JList list_2 = new JList();
+		JList<String> list_2 = new JList<String>();
+		list_2.setModel(model2);
 		list_2.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		panel_9.add(list_2, BorderLayout.CENTER);
-		panel_3.add(panel_10);
-		panel_10.setLayout(new BorderLayout(0, 0));
-
-		JTextArea txtrCostOfHuman = new JTextArea();
-		txtrCostOfHuman.setText("Human resources cost");
-		txtrCostOfHuman.setFont(new Font("Tahoma", Font.BOLD, 11));
-		txtrCostOfHuman.setLineWrap(true);
-		txtrCostOfHuman.setEditable(false);
-		txtrCostOfHuman.setOpaque(false);
-		txtrCostOfHuman.setFocusable(false);
-		txtrCostOfHuman.setWrapStyleWord(true);
-		panel_10.add(txtrCostOfHuman, BorderLayout.NORTH);
-
-		JList list_3 = new JList();
-		list_3.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		panel_10.add(list_3, BorderLayout.CENTER);
+		scroll2.setViewportView(list_2);
 
 		JPanel panel_1 = new JPanel();
-		panel_1.setBounds(654, -1, 243, 262);
+		panel_1.setBounds(415, 305, 382, 294);
 		contentPane.add(panel_1);
 		panel_1.setLayout(new BorderLayout(0, 0));
 
@@ -212,20 +175,6 @@ public class SubFrame1 extends JFrame {
 		panel_11.add(panel_13, BorderLayout.CENTER);
 		panel_13.setLayout(new GridLayout(2, 2, 0, 0));
 
-		JLabel lblNewLabel_4 = new JLabel("Gonçalo L.");
-		panel_13.add(lblNewLabel_4);
-
-		costSprint();
-		panel_13.add(progressBar);
-
-		JLabel lblNewLabel_2 = new JLabel("Sara F.");
-		panel_13.add(lblNewLabel_2);
-
-		panel_13.add(progressBar1);
-
-//		costSprint();
-//		panel_11.add(progressBar, BorderLayout.CENTER);
-
 		panel_5.add(panel_12);
 		panel_12.setLayout(new BorderLayout(0, 0));
 
@@ -244,77 +193,176 @@ public class SubFrame1 extends JFrame {
 		panel_12.add(panel_14, BorderLayout.CENTER);
 		panel_14.setLayout(new GridLayout(2, 2, 0, 0));
 
-		JLabel lblNewLabel_5 = new JLabel("Gonçalo L.");
-		panel_14.add(lblNewLabel_5);
+		JPanel panel_17 = new JPanel();
+		panel_17.setBounds(10, 305, 382, 294);
+		contentPane.add(panel_17);
+		panel_17.setLayout(new BorderLayout(0, 0));
 
-		costTotal();
+		JPanel panel_2_1 = new JPanel();
+		panel_17.add(panel_2_1, BorderLayout.NORTH);
+		panel_2_1.setPreferredSize(new Dimension(10, 30));
 
-		panel_14.add(progressBar2);
+		JLabel lblNewLabel_2 = new JLabel("Data in each SPRINT");
+		lblNewLabel_2.setFont(new Font("Tahoma", Font.BOLD, 11));
+		panel_2_1.add(lblNewLabel_2);
 
-		JLabel lblNewLabel_3 = new JLabel("Sara F.");
-		panel_14.add(lblNewLabel_3);
+		JPanel panel_18 = new JPanel();
+		panel_17.add(panel_18, BorderLayout.CENTER);
+		panel_18.setLayout(new GridLayout(1, 2, 0, 0));
+		JPanel panel_9 = new JPanel();
+		panel_18.add(panel_9);
 
-		panel_14.add(progressBar3);
+		panel_9.setLayout(new BorderLayout(0, 0));
 
-//		costTotal();
-//		panel_12.add(progressBar1, BorderLayout.CENTER);
-		Component verticalStrut = Box.createVerticalStrut(20);
-		verticalStrut.setBounds(644, -1, 0, 262);
-		contentPane.add(verticalStrut);
+		JTextArea txtrTotalHoursOf = new JTextArea();
+		txtrTotalHoursOf.setText("Total hours of work planned vs performed");
+		txtrTotalHoursOf.setFont(new Font("Tahoma", Font.BOLD, 11));
+		txtrTotalHoursOf.setWrapStyleWord(true);
+		txtrTotalHoursOf.setOpaque(false);
+		txtrTotalHoursOf.setLineWrap(true);
+		txtrTotalHoursOf.setFocusable(false);
+		txtrTotalHoursOf.setEditable(false);
+		panel_9.add(txtrTotalHoursOf, BorderLayout.NORTH);
+
+		JPanel panel_15 = new JPanel();
+		panel_9.add(panel_15, BorderLayout.CENTER);
+		JPanel panel_10 = new JPanel();
+		panel_18.add(panel_10);
+		panel_10.setLayout(new BorderLayout(0, 0));
+
+		JTextArea txtrCostOfHuman = new JTextArea();
+		txtrCostOfHuman.setText("Human resources cost");
+		txtrCostOfHuman.setFont(new Font("Tahoma", Font.BOLD, 11));
+		txtrCostOfHuman.setLineWrap(true);
+		txtrCostOfHuman.setEditable(false);
+		txtrCostOfHuman.setOpaque(false);
+		txtrCostOfHuman.setFocusable(false);
+		txtrCostOfHuman.setWrapStyleWord(true);
+		panel_10.add(txtrCostOfHuman, BorderLayout.NORTH);
+
+		JPanel panel_16 = new JPanel();
+		panel_10.add(panel_16, BorderLayout.CENTER);
+
 
 	}
 
 	public void DevelopedProducts() {
+		List<Card> devCards = new ArrayList<Card>();
 
+		for (Card card : cards) {
+			List<Label> labels = card.getLabels();
+			for (Label label : labels) {
+				if (label.getName().equals("Developed")) {
+					devCards.add(card);
+
+				}
+
+			}
+
+		}
+		for (Card card2 : devCards) {
+			List<Label> devLabels = card2.getLabels();
+			for (Label label : devLabels) {
+				if (label.getName().equals("SPRINT1"))
+					model.addElement("SPRINT 1: " + card2.getName());
+				if (label.getName().equals("SPRINT2"))
+					model.addElement("SPRINT 2: " + card2.getName());
+				if (label.getName().equals("SPRINT3"))
+					model.addElement("SPRINT 3: " + card2.getName());
+			}
+		}
+	}
+
+	public void MeetingText() {
+		List<Card> sprint1 = new ArrayList<Card>();
+		List<Card> sprint2 = new ArrayList<Card>();
+		List<Card> sprint3 = new ArrayList<Card>();
+
+		for (Card card : cards) {
+			List<Label> labels = card.getLabels();
+			for (Label label : labels) {
+				if (label.getName().equals("SPRINT1")) {
+					sprint1.add(card);
+
+				}
+
+			}
+
+		}
+		for (Card card : cards) {
+			List<Label> labels = card.getLabels();
+			for (Label label : labels) {
+				if (label.getName().equals("SPRINT2")) {
+					sprint2.add(card);
+
+				}
+
+			}
+
+		}
+		for (Card card : cards) {
+			List<Label> labels = card.getLabels();
+			for (Label label : labels) {
+				if (label.getName().equals("SPRINT3")) {
+					sprint3.add(card);
+
+				}
+
+			}
+
+		}
+		for (Card card2 : sprint1) {
+			List<Label> planLabels = card2.getLabels();
+			for (Label label : planLabels) {
+				if (label.getName().equals("Planning Meeting"))
+					model2.addElement("SPRINT 1 Planning: " + card2.getDesc());
+				if (label.getName().equals("Review Meeting"))
+					model2.addElement("SPRINT 1 Review: " + card2.getDesc());
+				if (label.getName().equals("Retrospective Meeting"))
+					model2.addElement("SPRINT 1 Retrospective: " + card2.getDesc());
+			}
+		}
+		for (Card card2 : sprint2) {
+			List<Label> planLabels = card2.getLabels();
+			for (Label label : planLabels) {
+				if (label.getName().equals("Planning Meeting"))
+					model2.addElement("SPRINT 2 Planning: " + card2.getDesc());
+				if (label.getName().equals("Review Meeting"))
+					model2.addElement("SPRINT 2 Review: " + card2.getDesc());
+				if (label.getName().equals("Retrospective Meeting"))
+					model2.addElement("SPRINT 2 Retrospective: " + card2.getDesc());
+			}
+		}
+		for (Card card2 : sprint3) {
+			List<Label> planLabels = card2.getLabels();
+			for (Label label : planLabels) {
+				if (label.getName().equals("Planning Meeting"))
+					model2.addElement("SPRINT 3 Planning: " + card2.getDesc());
+				if (label.getName().equals("Review Meeting"))
+					model2.addElement("SPRINT 3 Review: " + card2.getDesc());
+				if (label.getName().equals("Retrospective Meeting"))
+					model2.addElement("SPRINT 3 Retrospective: " + card2.getDesc());
+			}
+		}
+	}
+
+	public void SprintDuration() {
 		for (Card card : cards) {
 			for (int j = 0; j < card.getLabels().size(); j++) {
 				String label = card.getLabels().get(j).getName();
-				if (label.equals("Development")) {
-					String pattern = "MM/dd/yyyy";
-					model.addElement(card.getName());
+				if (card.getName().equals("SPRINT Duration")) {
+					if (label.equals("SPRINT1"))
+						model1.addElement("SPRINT 1:  " + card.getDesc());
+					if (label.equals("SPRINT2"))
+						model1.addElement("SPRINT 2:  " + card.getDesc());
+					if (label.equals("SPRINT3"))
+						model1.addElement("SPRINT 3:  " + card.getDesc());
 				}
-
 			}
 
 		}
 
 	}
 
-	public void SprintInfo() {
-		String end;
-		for (Card card : cards) {
-			for (int j = 0; j < card.getLabels().size(); j++) {
-				String label = card.getLabels().get(j).getName();
-				if (label.equals("Planning Meeting")) {
-					String pattern = "dd/MM/yyyy";
-					DateFormat df = new SimpleDateFormat(pattern);
-					if (card.getDue() != null) {
-						end = df.format(card.getDue());
-						model1.addElement("End date - " + end);
-					}
-				}
-
-			}
-
-		}
-	}
-
-	public void costSprint() {
-		costSprint = (nMembers * 1 * 21 * 20);
-		progressBar = new JProgressBar(0, costSprint * nSprints);
-		progressBar1 = new JProgressBar(0, costSprint * nSprints);
-		progressBar.setValue(costSprint);
-		progressBar1.setValue(costSprint);
-		progressBar.setStringPainted(true);
-		progressBar1.setStringPainted(true);
-	}
-
-	public void costTotal() {
-		progressBar2 = new JProgressBar(0, costSprint * nSprints);
-		progressBar2.setValue(costSprint);
-		progressBar2.setStringPainted(true);
-		progressBar3 = new JProgressBar(0, costSprint * nSprints);
-		progressBar3.setValue(costSprint);
-		progressBar3.setStringPainted(true);
-	}
+	
 }
