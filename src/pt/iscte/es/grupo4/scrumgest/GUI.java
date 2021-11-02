@@ -212,10 +212,8 @@ public class GUI extends JFrame {
 	}
 
 	public void GitHubConnect() throws IOException {
-		GitHub github;
 
-		new GitHubBuilder().build();
-		github = GitHub.connectAnonymously();
+		GitHub github = new GitHubBuilder().withOAuthToken("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").build();
 
 		repository = github.getRepository("gmmsl-iscte/ES-LETI-1Sem-2021-Grupo4");
 

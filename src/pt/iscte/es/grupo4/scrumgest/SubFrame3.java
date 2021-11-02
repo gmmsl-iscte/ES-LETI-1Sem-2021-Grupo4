@@ -21,9 +21,13 @@ import java.awt.Font;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
@@ -37,10 +41,14 @@ public class SubFrame3 extends JFrame {
 
 	/**
 	 * Create the frame.
-	 * @throws FileNotFoundException 
+	 * 
+	 * @throws FileNotFoundException
 	 */
 	public SubFrame3(GHRepository repository) throws FileNotFoundException {
 		this.repository = repository;
+		model = new DefaultListModel<String>();
+		model_1 = new DefaultListModel<String>();
+
 		setResizable(false);
 		setTitle("Github Data");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -99,11 +107,10 @@ public class SubFrame3 extends JFrame {
 		JScrollPane scrollPane_1 = new JScrollPane();
 		panel_6.add(scrollPane_1, BorderLayout.CENTER);
 
-		model = new DefaultListModel<String>();
-		JList list = new JList();
+		JList<String> list = new JList<String>();
 		scrollPane_1.setViewportView(list);
 		list.setModel(model);
-		getCommits();
+		getTags();
 
 		Component verticalStrut_1 = Box.createVerticalStrut(20);
 		verticalStrut_1.setBounds(471, 0, 0, 261);
@@ -128,16 +135,27 @@ public class SubFrame3 extends JFrame {
 		JScrollPane scrollPane_2 = new JScrollPane();
 		panel_8.add(scrollPane_2, BorderLayout.CENTER);
 
-		JList list_1 = new JList();
+		getCommits();
+		JList<String> list_1 = new JList<String>();
+		list_1.setModel(model_1);
 		scrollPane_2.setViewportView(list_1);
 
-		model_1 = new DefaultListModel<String>();
 	}
 
-	public void getCommits() {
+	public void getTags() {
 
 		for (GHCommit commit : repository.listCommits()) {
-			model.addElement(commit.getSHA1());
+
+			try {
+				Date date = commit.getCommitDate();
+				DateFormat dateFormat = new SimpleDateFormat("dd-M-yyyy");
+				String strDate = dateFormat.format(date);
+
+				model.addElement(strDate + " - " + commit.getSHA1());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 		}
 	}
@@ -151,9 +169,30 @@ public class SubFrame3 extends JFrame {
 			String data = myReader.nextLine();
 			readme.add(data);
 		}
-		
+
 		textArea.setText(readme.toString());
 
+	}
+
+	public void getCommits() {
+		List<String> elements = new ArrayList<String>();
+		for (GHCommit commit : repository.listCommits()) {
+			try {
+				String user = commit.getCommitShortInfo().getAuthor().getName();
+				Date date = commit.getCommitDate();
+				DateFormat dateFormat = new SimpleDateFormat("dd-M-yyyy");
+				String strDate = dateFormat.format(date);
+				String message = commit.getCommitShortInfo().getMessage();
+				String element = user + " on " + strDate + " - " + message;
+				elements.add(element);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		for (int i = elements.size() - 1; i >= 0; i--) {
+			model_1.addElement(elements.get(i));
+		}
 	}
 
 }
