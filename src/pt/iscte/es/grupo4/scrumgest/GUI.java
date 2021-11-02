@@ -30,6 +30,10 @@ import javax.swing.Box;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -212,8 +216,8 @@ public class GUI extends JFrame {
 	}
 
 	public void GitHubConnect() throws IOException {
-
-		GitHub github = new GitHubBuilder().withOAuthToken("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").build();
+		String token = readFile("C:/Users/Girao/Desktop/Token.txt", StandardCharsets.UTF_8);
+		GitHub github = new GitHubBuilder().withOAuthToken(token).build();
 
 		repository = github.getRepository("gmmsl-iscte/ES-LETI-1Sem-2021-Grupo4");
 
@@ -225,5 +229,10 @@ public class GUI extends JFrame {
 
 	public void setTextField(JTextField textField) {
 		this.textField = textField;
+	}
+
+	static String readFile(String path, Charset encoding) throws IOException {
+		byte[] encoded = Files.readAllBytes(Paths.get(path));
+		return new String(encoded, encoding);
 	}
 }
