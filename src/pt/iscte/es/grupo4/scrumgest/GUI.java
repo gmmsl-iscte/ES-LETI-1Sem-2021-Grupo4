@@ -216,7 +216,7 @@ public class GUI extends JFrame {
 	}
 
 	public void GitHubConnect() throws IOException {
-		String token = readFile("C:/Users/Girao/Desktop/Token.txt", StandardCharsets.UTF_8);
+		String token = readFile("C:\\Users\\gonca\\Desktop\\github token.txt", StandardCharsets.UTF_8);
 		GitHub github = new GitHubBuilder().withOAuthToken(token).build();
 
 		repository = github.getRepository("gmmsl-iscte/ES-LETI-1Sem-2021-Grupo4");
