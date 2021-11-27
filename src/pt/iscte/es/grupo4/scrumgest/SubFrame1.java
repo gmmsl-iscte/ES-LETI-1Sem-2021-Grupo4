@@ -242,7 +242,7 @@ public class SubFrame1 extends JFrame {
 
 		JPanel panel_16 = new JPanel();
 		panel_10.add(panel_16, BorderLayout.CENTER);
-
+		getHours();
 
 	}
 
@@ -364,5 +364,10 @@ public class SubFrame1 extends JFrame {
 
 	}
 
-	
+	public void getHours() {
+		My_Board board = new My_Board(cards);
+		board.calculateAllWorkingHours();
+		System.out.println(board.getSprint1TotalWorkHours());
+	}
+
 }
