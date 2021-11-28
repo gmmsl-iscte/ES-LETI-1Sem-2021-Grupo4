@@ -8,6 +8,8 @@ import javax.swing.SwingConstants;
 import java.awt.Panel;
 import javax.swing.JTextField;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
+
 import java.awt.Color;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
@@ -31,7 +33,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -52,6 +53,7 @@ public class GUI extends JFrame {
 	Trello trelloApi;
 	HashMap<TList, Card> sprintAndCards;
 	List<Card> cards;
+	List<Member>members;
 	List<TList> sprint;
 	List<Card> sprintCards;
 	GHRepository repository;
@@ -108,8 +110,7 @@ public class GUI extends JFrame {
 		list.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 
 		list.setModel(new AbstractListModel<String>() {
-			String[] values = new String[] { "Sara Fonseca - 60188", "Fabio Cruz - 62003", "Gonçalo Lopes - 54342",
-					"Bruno Maia - 69093" };
+			String[] values = new String[] { "Sara Fonseca - 60188", "Fabio Cruz - 62003", "Gonçalo Lopes - 54342" };
 
 			public int getSize() {
 				return values.length;
@@ -166,7 +167,7 @@ public class GUI extends JFrame {
 					EventQueue.invokeLater(new Runnable() {
 						public void run() {
 							try {
-								SubFrame2 frame2 = new SubFrame2();
+								SubFrame2 frame2 = new SubFrame2(cards,members);
 								frame2.setVisible(true);
 							} catch (Exception e) {
 								e.printStackTrace();
@@ -212,11 +213,12 @@ public class GUI extends JFrame {
 		List<Board> member = trelloApi.getMemberBoards("saragiraopereirafernandesdafonseca");
 		for (Board quadro : member) {
 			cards = quadro.fetchCards();
+			members = quadro.fetchMembers();
 		}
 	}
 
 	public void GitHubConnect() throws IOException {
-		String token = readFile("C:\\Users\\facruz\\Desktop\\gittoken.txt", StandardCharsets.UTF_8);
+		String token = JOptionPane.showInputDialog("Please enter your GitHub authentication token.");
 		GitHub github = new GitHubBuilder().withOAuthToken(token).build();
 
 		repository = github.getRepository("gmmsl-iscte/ES-LETI-1Sem-2021-Grupo4");
