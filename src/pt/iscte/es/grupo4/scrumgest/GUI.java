@@ -38,6 +38,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -53,9 +54,12 @@ public class GUI extends JFrame {
 	Trello trelloApi;
 	HashMap<TList, Card> sprintAndCards;
 	List<Card> cards;
-	List<Member>members;
+	List<Member> members;
 	List<TList> sprint;
 	List<Card> sprintCards;
+	List<Board> member;
+	Map<String,List<Card>> memberCards;
+	Board board;
 	GHRepository repository;
 
 	/**
@@ -167,7 +171,7 @@ public class GUI extends JFrame {
 					EventQueue.invokeLater(new Runnable() {
 						public void run() {
 							try {
-								SubFrame2 frame2 = new SubFrame2(cards,members);
+								SubFrame2 frame2 = new SubFrame2(cards, memberCards);
 								frame2.setVisible(true);
 							} catch (Exception e) {
 								e.printStackTrace();
@@ -210,10 +214,19 @@ public class GUI extends JFrame {
 	}
 
 	public void TrelloContents() {
-		List<Board> member = trelloApi.getMemberBoards("saragiraopereirafernandesdafonseca");
-		for (Board quadro : member) {
-			cards = quadro.fetchCards();
-			members = quadro.fetchMembers();
+		member = trelloApi.getMemberBoards("saragirao");
+		for (Board board : member) {
+			this.board=board;
+			cards = board.fetchCards();
+			members = board.fetchMembers();
+		}
+		FetchCardsbyMember();
+	}
+	
+	public void FetchCardsbyMember() {
+		memberCards = new HashMap<String,List<Card>>();
+		for (Member id: members) {
+			memberCards.put(id.getUsername(),board.fetchMemberCards(id.getId()));
 		}
 	}
 

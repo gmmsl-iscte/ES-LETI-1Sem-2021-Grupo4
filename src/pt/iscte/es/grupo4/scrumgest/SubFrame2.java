@@ -11,10 +11,12 @@ import com.julienvey.trello.domain.Action;
 import com.julienvey.trello.domain.Card;
 import com.julienvey.trello.domain.Label;
 import com.julienvey.trello.domain.Member;
+import com.julienvey.trello.domain.Membership;
 
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
@@ -26,7 +28,7 @@ import javax.swing.border.BevelBorder;
 public class SubFrame2 extends JFrame {
 	private List<Card> cards;
 	private List<Card> ArtifactCards;
-	private List<Member> members;
+	private Map<String, List<Card>> memberCards;
 
 	private JPanel contentPane;
 	private JPanel panel = new JPanel();
@@ -55,18 +57,19 @@ public class SubFrame2 extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public SubFrame2(List<Card> cards, List<Member> members) {
+	public SubFrame2(List<Card> cards,Map<String, List<Card>> memberCards2) {
 		this.cards = cards;
-		this.members = members;
+		this.memberCards = memberCards2;
 
 		model = new DefaultListModel<String>();
 		model1 = new DefaultListModel<String>();
 		model2 = new DefaultListModel<String>();
 		model3 = new DefaultListModel<String>();
 		listUpdate();
+		ActivitiesByMembers();
 		setTitle("Trello Data");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 589, 301);
+		setBounds(100, 100, 782, 302);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new GridLayout(1, 2, 0, 0));
@@ -128,6 +131,32 @@ public class SubFrame2 extends JFrame {
 
 	}
 
+	public void ActivitiesByMembers() {
+		int numArtifacts;
+		double totalhours;
+		for (Map.Entry<String, List<Card>> set : memberCards.entrySet()) {
+			numArtifacts = 0;
+			totalhours = 0;
+			for (Card card : set.getValue()) {
+				List<Label> labels = card.getLabels();
+				for (Label label : labels) {
+					if (label.getName().equals("Artifact")) {
+						numArtifacts++;
+						for (Action comment : card.getActions()) {
+							String card_coment = comment.getData().getText();
+							if ((card_coment != null) && card_coment.startsWith("plus!") && !card_coment.contains("@")) {
+								String[] parts = card_coment.substring(6).split("/");
+								totalhours += Double.parseDouble(parts[0]);
+
+							}
+						}
+					}
+				}
+			}
+			model.addElement("Member: "+set.getKey() + " Activities: " + numArtifacts + " Hours: "+totalhours +"h"+ " Cost: "+totalhours*20+"$");
+		}
+	}
+
 	public int ActivitiesTotal() {
 		ArtifactCards = new ArrayList<Card>();
 		int numArtifacts = 0;
@@ -142,7 +171,6 @@ public class SubFrame2 extends JFrame {
 		}
 		return numArtifacts;
 	}
-
 
 	public double HoursTotal() {
 		double totalhours = 0;
