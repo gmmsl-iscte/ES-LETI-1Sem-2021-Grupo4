@@ -23,9 +23,35 @@ public class My_Board {
 	double sprint1TotalWorkHours = 0;
 	double sprint2TotalWorkHours = 0;
 	double sprint3TotalWorkHours = 0;
+	double sprint1TotalCost = 0;
+	double sprint2TotalCost = 0;
+	double sprint3totalCost = 0;
 	
 	
-	
+
+	public double getSprint1TotalCost() {
+		return sprint1TotalCost;
+	}
+
+	public void setSprint1TotalCost(double sprint1TotalCost) {
+		this.sprint1TotalCost = sprint1TotalCost;
+	}
+
+	public double getSprint2TotalCost() {
+		return sprint2TotalCost;
+	}
+
+	public void setSprint2TotalCost(double sprint2TotalCost) {
+		this.sprint2TotalCost = sprint2TotalCost;
+	}
+
+	public double getSprint3totalCost() {
+		return sprint3totalCost;
+	}
+
+	public void setSprint3totalCost(double sprint3totalCost) {
+		this.sprint3totalCost = sprint3totalCost;
+	}
 
 	public My_Board(List<Card> cards) {
 		this.cards = cards;
@@ -95,6 +121,18 @@ public class My_Board {
 		setSprint2TotalWorkHours(caltulateTotalWorkingHoursPerSprint("SPRINT2"));
 		setSprint3TotalWorkHours(caltulateTotalWorkingHoursPerSprint("SPRINT3"));
 
+	}
+	
+	public double calculateTotalCostPerSprint(String StringID) {
+		return caltulateTotalWorkingHoursPerSprint(StringID)*20;
+	}
+	
+	public void calculateCostTotal() {
+		calculateAllWorkingHours();
+		setSprint1TotalCost(sprint1TotalWorkHours*20);
+		setSprint2TotalCost(sprint2TotalWorkHours*20);
+		setSprint3totalCost(sprint3TotalWorkHours*20);
+		
 	}
 //
 //	public static void main(String[] args) throws InterruptedException {

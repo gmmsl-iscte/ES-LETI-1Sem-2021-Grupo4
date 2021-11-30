@@ -28,6 +28,7 @@ import javax.swing.border.BevelBorder;
 public class SubFrame2 extends JFrame {
 	private List<Card> cards;
 	private List<Card> ArtifactCards;
+	private List<Card> ActivitiesCard;
 	private Map<String, List<Card>> memberCards;
 
 	private JPanel contentPane;
@@ -57,7 +58,7 @@ public class SubFrame2 extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public SubFrame2(List<Card> cards,Map<String, List<Card>> memberCards2) {
+	public SubFrame2(List<Card> cards, Map<String, List<Card>> memberCards2) {
 		this.cards = cards;
 		this.memberCards = memberCards2;
 
@@ -66,7 +67,8 @@ public class SubFrame2 extends JFrame {
 		model2 = new DefaultListModel<String>();
 		model3 = new DefaultListModel<String>();
 		listUpdate();
-		ActivitiesByMembers();
+		ActivitiesByMembers1();
+		ActivitiesByMembers2();
 		setTitle("Trello Data");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 782, 302);
@@ -131,9 +133,10 @@ public class SubFrame2 extends JFrame {
 
 	}
 
-	public void ActivitiesByMembers() {
+	public void ActivitiesByMembers1() {
 		int numArtifacts;
 		double totalhours;
+
 		for (Map.Entry<String, List<Card>> set : memberCards.entrySet()) {
 			numArtifacts = 0;
 			totalhours = 0;
@@ -144,7 +147,8 @@ public class SubFrame2 extends JFrame {
 						numArtifacts++;
 						for (Action comment : card.getActions()) {
 							String card_coment = comment.getData().getText();
-							if ((card_coment != null) && card_coment.startsWith("plus!") && !card_coment.contains("@")) {
+							if ((card_coment != null) && card_coment.startsWith("plus!")
+									&& !card_coment.contains("@")) {
 								String[] parts = card_coment.substring(6).split("/");
 								totalhours += Double.parseDouble(parts[0]);
 
@@ -153,11 +157,40 @@ public class SubFrame2 extends JFrame {
 					}
 				}
 			}
-			model.addElement("Member: "+set.getKey() + " Activities: " + numArtifacts + " Hours: "+totalhours +"h"+ " Cost: "+totalhours*20+"$");
+			model.addElement("Member: " + set.getKey() + " Activities: " + numArtifacts + " Hours: " + totalhours + "h"
+					+ " Cost: " + totalhours * 20 + "$");
 		}
 	}
 
-	public int ActivitiesTotal() {
+	public void ActivitiesByMembers2() {
+		int numActivities;
+		double totalhours;
+		for (Map.Entry<String, List<Card>> set : memberCards.entrySet()) {
+			numActivities = 0;
+			totalhours = 0;
+			for (Card card : set.getValue()) {
+				List<Label> labels = card.getLabels();
+				for (Label label : labels) {
+					if (label.getName().equals("No Artifact")) {
+						numActivities++;
+						for (Action comment : card.getActions()) {
+							String card_coment = comment.getData().getText();
+							if ((card_coment != null) && card_coment.startsWith("plus!")
+									&& !card_coment.contains("@")) {
+								String[] parts = card_coment.substring(6).split("/");
+								totalhours += Double.parseDouble(parts[0]);
+
+							}
+						}
+					}
+				}
+			}
+			model2.addElement("Member: " + set.getKey() + " Activities: " + numActivities + " Hours: " + totalhours
+					+ "h" + " Cost: " + totalhours * 20 + "$");
+		}
+	}
+
+	public int ActivitiesTotal1() {
 		ArtifactCards = new ArrayList<Card>();
 		int numArtifacts = 0;
 		for (Card card : cards) {
@@ -172,7 +205,22 @@ public class SubFrame2 extends JFrame {
 		return numArtifacts;
 	}
 
-	public double HoursTotal() {
+	public int ActivitiesTotal2() {
+		ActivitiesCard = new ArrayList<Card>();
+		int numActivities = 0;
+		for (Card card : cards) {
+			List<Label> labels = card.getLabels();
+			for (Label label : labels) {
+				if (label.getName().equals("No Artifact")) {
+					numActivities++;
+					ActivitiesCard.add(card);
+				}
+			}
+		}
+		return numActivities;
+	}
+
+	public double HoursTotal1() {
 		double totalhours = 0;
 		for (Card card : ArtifactCards) {
 			for (Action comment : card.getActions()) {
@@ -187,12 +235,33 @@ public class SubFrame2 extends JFrame {
 		return totalhours;
 	}
 
-	public double costTotal() {
-		return HoursTotal() * 20;
+	public double HoursTotal2() {
+		double totalhours = 0;
+		for (Card card : ActivitiesCard) {
+			for (Action comment : card.getActions()) {
+				String card_coment = comment.getData().getText();
+				if ((card_coment != null) && card_coment.startsWith("plus!") && !card_coment.contains("@")) {
+					String[] parts = card_coment.substring(6).split("/");
+					totalhours += Double.parseDouble(parts[0]);
+
+				}
+			}
+		}
+		return totalhours;
+	}
+
+	public double costTotal1() {
+		return HoursTotal1() * 20;
+	}
+
+	public double costTotal2() {
+		return HoursTotal2() * 20;
 	}
 
 	public void listUpdate() {
-		model1.addElement(
-				"Activities: " + ActivitiesTotal() + " Hours: " + HoursTotal() + "h" + " Cost: " + costTotal() + "$");
+		model1.addElement("Activities: " + ActivitiesTotal1() + " Hours: " + HoursTotal1() + "h" + " Cost: "
+				+ costTotal1() + "$");
+		model3.addElement("Activities: " + ActivitiesTotal2() + " Hours: " + HoursTotal2() + "h" + " Cost: "
+				+ costTotal2() + "$");
 	}
 }
