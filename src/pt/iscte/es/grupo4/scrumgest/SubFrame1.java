@@ -210,12 +210,12 @@ public class SubFrame1 extends JFrame {
 		list_5.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
 				if (list_5.getSelectedIndex() == 0) {
-					PieChart_AWT demo = new PieChart_AWT("Estimate", name_1, value_1, name_2, value_2, name_3, value_3);
+					PieChart demo = new PieChart("Estimate", name_1, value_1, name_2, value_2, name_3, value_3);
 					demo.setSize(560, 367);
 					demo.setVisible(true);
 				}
 				if (list_5.getSelectedIndex() == 1) {
-					PieChart_AWT demo = new PieChart_AWT("Performed", name1, value1, name2, value2, name3, value3);
+					PieChart demo = new PieChart("Performed", name1, value1, name2, value2, name3, value3);
 					demo.setSize(560, 367);
 					demo.setVisible(true);
 				}

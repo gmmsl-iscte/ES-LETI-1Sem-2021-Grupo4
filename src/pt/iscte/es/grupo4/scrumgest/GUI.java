@@ -207,9 +207,10 @@ public class GUI extends JFrame {
 
 	}
 
+	@SuppressWarnings("deprecation")
 	public void TrelloConnect() {
 		trelloApi = new TrelloImpl("d9a050a2b06b9d83d847f5145d5c9a01",
-				"92b59d9c284cecc282dbbc981c376919b95eac07e8a53cb2ae13926f371c0aa8", new ApacheHttpClient());
+				"92b59d9c284cecc282dbbc981c376919b95eac07e8a53cb2ae13926f371c0aa8");
 
 	}
 
