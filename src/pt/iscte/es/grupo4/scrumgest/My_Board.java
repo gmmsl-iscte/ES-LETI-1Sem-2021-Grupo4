@@ -28,6 +28,9 @@ public class My_Board {
 	double sprint3totalCost = 0;
 	
 	
+	public My_Board(List<Card> cards) {
+		this.cards = cards;
+	}
 
 	public double getSprint1TotalCost() {
 		return sprint1TotalCost;
@@ -53,9 +56,6 @@ public class My_Board {
 		this.sprint3totalCost = sprint3totalCost;
 	}
 
-	public My_Board(List<Card> cards) {
-		this.cards = cards;
-	}
 
 	public double getSprint1TotalWorkHours() {
 		return sprint1TotalWorkHours;

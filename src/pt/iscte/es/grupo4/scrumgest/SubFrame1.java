@@ -4,11 +4,13 @@ import java.awt.BorderLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
 import javax.swing.JLabel;
 import java.awt.GridLayout;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
-
+import java.util.Map;
 import java.awt.Dimension;
 import com.julienvey.trello.domain.*;
 
@@ -18,17 +20,39 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.DefaultListModel;
 import javax.swing.border.BevelBorder;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.ListSelectionEvent;
 
 @SuppressWarnings("serial")
 public class SubFrame1 extends JFrame {
+	String name1;
+	String name2;
+	String name3;
+	double value1;
+	double value2;
+	double value3;
+	String name_1;
+	String name_2;
+	String name_3;
+	double value_1;
+	double value_2;
+	double value_3;
+
 	List<TList> sprint;
 	List<Card> cards;
+	private Map<String, List<Card>> memberCards;
 	JList<String> list;
 	JList<String> list_1;
 	DefaultListModel<String> model;
 	DefaultListModel<String> model1;
 	DefaultListModel<String> model2;
+	DefaultListModel<String> model3;
+	DefaultListModel<String> model4;
+	DefaultListModel<String> model5;
+	DefaultListModel<String> model6;
 	private JPanel contentPane;
+	private JPanel panel_13;
 	final int nMembers = 2;
 	int costSprint;
 	final int nSprints = 3;
@@ -36,15 +60,21 @@ public class SubFrame1 extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public SubFrame1(List<Card> cards) {
+	public SubFrame1(List<Card> cards, Map<String, List<Card>> memberCards) {
 		this.cards = cards;
+		this.memberCards = memberCards;
 		model = new DefaultListModel<>();
 		model1 = new DefaultListModel<String>();
 		model2 = new DefaultListModel<String>();
+		model3 = new DefaultListModel<String>();
+		model4 = new DefaultListModel<String>();
+		model5 = new DefaultListModel<String>();
+		model6 = new DefaultListModel<String>();
 
 		DevelopedProducts();
 		SprintDuration();
 		MeetingText();
+		getHoursByMember();
 
 		setResizable(false);
 		setTitle("SPRINT Data");
@@ -171,9 +201,28 @@ public class SubFrame1 extends JFrame {
 		txtrTotalHoursOf_1.setEditable(false);
 		panel_11.add(txtrTotalHoursOf_1, BorderLayout.NORTH);
 
-		JPanel panel_13 = new JPanel();
+		panel_13 = new JPanel();
 		panel_11.add(panel_13, BorderLayout.CENTER);
-		panel_13.setLayout(new GridLayout(2, 2, 0, 0));
+		panel_13.setLayout(new BorderLayout(0, 0));
+
+		JList<String> list_5 = new JList<String>();
+		list_5.setModel(model5);
+		list_5.addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent e) {
+				if (list_5.getSelectedIndex() == 0) {
+					PieChart_AWT demo = new PieChart_AWT("Estimate", name_1, value_1, name_2, value_2, name_3, value_3);
+					demo.setSize(560, 367);
+					demo.setVisible(true);
+				}
+				if (list_5.getSelectedIndex() == 1) {
+					PieChart_AWT demo = new PieChart_AWT("Performed", name1, value1, name2, value2, name3, value3);
+					demo.setSize(560, 367);
+					demo.setVisible(true);
+				}
+			}
+		});
+		list_5.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		panel_13.add(list_5);
 
 		panel_5.add(panel_12);
 		panel_12.setLayout(new BorderLayout(0, 0));
@@ -191,7 +240,12 @@ public class SubFrame1 extends JFrame {
 
 		JPanel panel_14 = new JPanel();
 		panel_12.add(panel_14, BorderLayout.CENTER);
-		panel_14.setLayout(new GridLayout(2, 2, 0, 0));
+		panel_14.setLayout(new BorderLayout(0, 0));
+
+		JList<String> list_6 = new JList<String>();
+		list_6.setModel(model6);
+		list_6.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		panel_14.add(list_6);
 
 		JPanel panel_17 = new JPanel();
 		panel_17.setBounds(10, 305, 382, 294);
@@ -226,6 +280,12 @@ public class SubFrame1 extends JFrame {
 
 		JPanel panel_15 = new JPanel();
 		panel_9.add(panel_15, BorderLayout.CENTER);
+		panel_15.setLayout(new BorderLayout(0, 0));
+
+		JList<String> list_4 = new JList<String>();
+		list_4.setModel(model4);
+		list_4.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		panel_15.add(list_4);
 		JPanel panel_10 = new JPanel();
 		panel_18.add(panel_10);
 		panel_10.setLayout(new BorderLayout(0, 0));
@@ -242,7 +302,12 @@ public class SubFrame1 extends JFrame {
 
 		JPanel panel_16 = new JPanel();
 		panel_10.add(panel_16, BorderLayout.CENTER);
-		getHours();
+		panel_16.setLayout(new BorderLayout(0, 0));
+
+		JList<String> list_3 = new JList<String>();
+		list_3.setModel(model3);
+		list_3.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		panel_16.add(list_3);
 
 	}
 
@@ -364,11 +429,52 @@ public class SubFrame1 extends JFrame {
 
 	}
 
-	public void getHours() {
-		My_Board board = new My_Board(cards);
-		board.calculateAllWorkingHours();
-		board.calculateCostTotal();
-		System.out.println(board.getSprint1TotalWorkHours() + " - "+ board.getSprint1TotalCost());
+	public void getHoursByMember() {
+		double totalhours;
+		double estimatehours;
+		Map<String, Double> hours = new LinkedHashMap<>();
+		Map<String, Double> estimate = new LinkedHashMap<>();
+		for (Map.Entry<String, List<Card>> set : memberCards.entrySet()) {
+			totalhours = 0;
+			estimatehours = 0;
+			for (Card card : set.getValue()) {
+				for (Action comment : card.getActions()) {
+					String card_coment = comment.getData().getText();
+					if ((card_coment != null) && card_coment.startsWith("plus!") && !card_coment.contains("@")) {
+						String[] parts = card_coment.substring(6).split("/");
+						totalhours += Double.parseDouble(parts[0]);
+						estimatehours += Double.parseDouble(parts[1]);
+						hours.put(set.getKey(), totalhours);
+						estimate.put(set.getKey(), estimatehours);
+					}
+				}
+			}
+
+		}
+
+		name1 = (String) hours.keySet().toArray()[0];
+		name2 = (String) hours.keySet().toArray()[1];
+		name3 = (String) hours.keySet().toArray()[2];
+		value1 = hours.get(name1);
+		value2 = hours.get(name2);
+		value3 = hours.get(name3);
+
+		name_1 = (String) estimate.keySet().toArray()[0];
+		name_2 = (String) estimate.keySet().toArray()[1];
+		name_3 = (String) estimate.keySet().toArray()[2];
+		value_1 = estimate.get(name_1);
+		value_2 = estimate.get(name_2);
+		value_3 = estimate.get(name_3);
+
+		model5.addElement("Estimate");
+		model5.addElement("Performed");
+
 	}
 
+//	public void getHours() {
+//		My_Board board = new My_Board(cards);
+//		board.calculateAllWorkingHours();
+//		board.calculateCostTotal();
+//		System.out.println(board.getSprint1TotalWorkHours() + " - " + board.getSprint1TotalCost());
+//	}
 }

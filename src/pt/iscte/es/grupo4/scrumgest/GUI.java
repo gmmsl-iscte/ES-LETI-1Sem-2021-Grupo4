@@ -158,7 +158,7 @@ public class GUI extends JFrame {
 					EventQueue.invokeLater(new Runnable() {
 						public void run() {
 							try {
-								SubFrame1 frame1 = new SubFrame1(cards);
+								SubFrame1 frame1 = new SubFrame1(cards, memberCards);
 								frame1.setVisible(true);
 							} catch (Exception e) {
 								e.printStackTrace();
