@@ -15,19 +15,22 @@ import com.julienvey.trello.impl.http.ApacheHttpClient;
 
 public class My_Board {
 	Trello trelloApi;
-	HashMap<TList, Card> sprintAndCards; // unkown
 	List<Card> cards = new ArrayList<Card>();
-	List<TList> sprint = new ArrayList<TList>();// not used yet
-	List<Card> sprintCards;// not used yet
 
+	final int COSTPERHOUR = 20;
 	double sprint1TotalWorkHours = 0;
 	double sprint2TotalWorkHours = 0;
 	double sprint3TotalWorkHours = 0;
+	double sprint1PlannedWorkHours = 0;
+	double sprint2PlannedWorkHours = 0;
+	double sprint3PlannedWorkHours = 0;
 	double sprint1TotalCost = 0;
 	double sprint2TotalCost = 0;
-	double sprint3totalCost = 0;
-	
-	
+	double sprint3TotalCost = 0;
+
+//	public My_Board(List<Card> cards) {
+//		this.cards = cards;
+//	}
 
 	public double getSprint1TotalCost() {
 		return sprint1TotalCost;
@@ -46,15 +49,35 @@ public class My_Board {
 	}
 
 	public double getSprint3totalCost() {
-		return sprint3totalCost;
+		return sprint3TotalCost;
 	}
 
 	public void setSprint3totalCost(double sprint3totalCost) {
-		this.sprint3totalCost = sprint3totalCost;
+		this.sprint3TotalCost = sprint3totalCost;
 	}
 
-	public My_Board(List<Card> cards) {
-		this.cards = cards;
+	public double getSprint1PlannedWorkHours() {
+		return sprint1PlannedWorkHours;
+	}
+
+	public void setSprint1PlannedWorkHours(double sprint1PlannedWorkHours) {
+		this.sprint1PlannedWorkHours = sprint1PlannedWorkHours;
+	}
+
+	public double getSprint2PlannedWorkHours() {
+		return sprint2PlannedWorkHours;
+	}
+
+	public void setSprint2PlannedWorkHours(double sprint2PlannedWorkHours) {
+		this.sprint2PlannedWorkHours = sprint2PlannedWorkHours;
+	}
+
+	public double getSprint3PlannedWorkHours() {
+		return sprint3PlannedWorkHours;
+	}
+
+	public void setSprint3PlannedWorkHours(double sprint3PlannedWorkHours) {
+		this.sprint3PlannedWorkHours = sprint3PlannedWorkHours;
 	}
 
 	public double getSprint1TotalWorkHours() {
@@ -80,24 +103,19 @@ public class My_Board {
 	public void setSprint3TotalWorkHours(double sprint3TotalWorkHours) {
 		this.sprint3TotalWorkHours = sprint3TotalWorkHours;
 	}
-//
-//	public void TrelloConnect() {
-//		trelloApi = new TrelloImpl("d9a050a2b06b9d83d847f5145d5c9a01",
-//				"92b59d9c284cecc282dbbc981c376919b95eac07e8a53cb2ae13926f371c0aa8", new ApacheHttpClient());
-//	}
 
-	public void TrelloContents() {// get all the boards for the member listed and add all cards to the Arraylist
-									// named cards
-		List<Board> member = trelloApi.getMemberBoards("saragiraopereirafernandesdafonseca");
-		for (Board quadro : member) {
-			cards = quadro.fetchCards();
-		}
+	@SuppressWarnings("deprecation")
+	public void ConnectToTrello() {
+
+		trelloApi = new TrelloImpl("d9a050a2b06b9d83d847f5145d5c9a01",
+				"92b59d9c284cecc282dbbc981c376919b95eac07e8a53cb2ae13926f371c0aa8");
 
 	}
 
-	// need to verify issue with some inputs from the activities
-	// Verified that the COMMENT OWNER can HAMMER it to only keep the format plus!
-	// X/Y (will probably need that)
+	public void loadCardsFromTrello() {
+		cards = trelloApi.getBoardCards("uZFHCkJo");
+	}
+
 	public double caltulateTotalWorkingHoursPerSprint(String StringID) {
 		double totalhours = 0;
 		for (Card card : cards) {
@@ -116,33 +134,74 @@ public class My_Board {
 		return totalhours;
 	}
 
-	public void calculateAllWorkingHours() {
+	public double caltulatePlannedHoursPerSprint(String StringID) {
+		double plannedhours = 0;
+		for (Card card : cards) {
+			List<Label> labels = card.getLabels();
+			for (Label label : labels) {
+				if (label.getName().equals(StringID))
+					for (Action comment : card.getActions()) {
+						String card_coment = comment.getData().getText();
+						if ((card_coment != null) && card_coment.startsWith("plus!") && !card_coment.contains("@")) {
+							String[] parts = card_coment.substring(6).split("/");
+							plannedhours += Double.parseDouble(parts[1]);
+						}
+					}
+			}
+		}
+		return plannedhours;
+	}
+
+	public void calculateAllHours() {
 		setSprint1TotalWorkHours(caltulateTotalWorkingHoursPerSprint("SPRINT1"));
 		setSprint2TotalWorkHours(caltulateTotalWorkingHoursPerSprint("SPRINT2"));
 		setSprint3TotalWorkHours(caltulateTotalWorkingHoursPerSprint("SPRINT3"));
 
+		setSprint1PlannedWorkHours(caltulatePlannedHoursPerSprint("SPRINT1"));
+		setSprint2PlannedWorkHours(caltulatePlannedHoursPerSprint("SPRINT2"));
+		setSprint3PlannedWorkHours(caltulatePlannedHoursPerSprint("SPRINT3"));
+
 	}
-	
+
 	public double calculateTotalCostPerSprint(String StringID) {
-		return caltulateTotalWorkingHoursPerSprint(StringID)*20;
+		return caltulateTotalWorkingHoursPerSprint(StringID) * COSTPERHOUR;
 	}
-	
-	public void calculateCostTotal() {
-		calculateAllWorkingHours();
-		setSprint1TotalCost(sprint1TotalWorkHours*20);
-		setSprint2TotalCost(sprint2TotalWorkHours*20);
-		setSprint3totalCost(sprint3TotalWorkHours*20);
-		
+
+	public void calculateEachSprintCost() {
+		setSprint1TotalCost(sprint1TotalWorkHours * COSTPERHOUR);
+		setSprint2TotalCost(sprint2TotalWorkHours * COSTPERHOUR);
+		setSprint3totalCost(sprint3TotalWorkHours * COSTPERHOUR);
+
 	}
-//
+
+	public void loadAllTheInformation() {
+		ConnectToTrello();
+		loadCardsFromTrello();
+		calculateAllHours();
+		calculateEachSprintCost();
+	}
+}
+
+// Used for class testing
 //	public static void main(String[] args) throws InterruptedException {
 //		My_Board test_board = new My_Board();
-//		test_board.TrelloConnect();
-//		test_board.TrelloContents();
-//		test_board.calculateAllWorkingHours();
+//	
+//		test_board.loadAllTheInformation();
 //		Thread.sleep(2000);
+//		System.out.println("Each Sprint worked hours");
 //		System.out.println(test_board.sprint1TotalWorkHours);
 //		System.out.println(test_board.sprint2TotalWorkHours);
 //		System.out.println(test_board.sprint3TotalWorkHours);
+//		
+//		System.out.println("Each Sprint Planed hours");
+//		System.out.println(test_board.sprint1PlannedWorkHours);
+//		System.out.println(test_board.sprint2PlannedWorkHours);
+//		System.out.println(test_board.sprint3PlannedWorkHours);
+//		
+//		System.out.println("Each Sprint Cost");
+//		System.out.println(test_board.sprint1TotalCost);
+//		System.out.println(test_board.sprint2TotalCost);
+//		System.out.println(test_board.sprint3TotalCost);
+//		
 //	}
-}
+//}

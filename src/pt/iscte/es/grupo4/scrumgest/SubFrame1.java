@@ -365,9 +365,9 @@ public class SubFrame1 extends JFrame {
 	}
 
 	public void getHours() {
-		My_Board board = new My_Board(cards);
-		board.calculateAllWorkingHours();
-		board.calculateCostTotal();
+		My_Board board = new My_Board();
+		board.calculateAllHours();
+		//board.calculateCostTotal();
 		System.out.println(board.getSprint1TotalWorkHours() + " - "+ board.getSprint1TotalCost());
 	}
 
