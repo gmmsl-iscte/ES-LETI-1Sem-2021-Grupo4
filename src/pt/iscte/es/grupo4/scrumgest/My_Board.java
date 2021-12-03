@@ -26,11 +26,20 @@ public class My_Board {
 	double sprint3PlannedWorkHours = 0;
 	double sprint1TotalCost = 0;
 	double sprint2TotalCost = 0;
+<<<<<<< HEAD
 	double sprint3TotalCost = 0;
 
 //	public My_Board(List<Card> cards) {
 //		this.cards = cards;
 //	}
+=======
+	double sprint3totalCost = 0;
+	
+	
+	public My_Board(List<Card> cards) {
+		this.cards = cards;
+	}
+>>>>>>> 54fe5e47062342d28da80c769bcfcd9284c57bbc
 
 	public double getSprint1TotalCost() {
 		return sprint1TotalCost;
@@ -72,6 +81,7 @@ public class My_Board {
 		this.sprint2PlannedWorkHours = sprint2PlannedWorkHours;
 	}
 
+<<<<<<< HEAD
 	public double getSprint3PlannedWorkHours() {
 		return sprint3PlannedWorkHours;
 	}
@@ -79,6 +89,8 @@ public class My_Board {
 	public void setSprint3PlannedWorkHours(double sprint3PlannedWorkHours) {
 		this.sprint3PlannedWorkHours = sprint3PlannedWorkHours;
 	}
+=======
+>>>>>>> 54fe5e47062342d28da80c769bcfcd9284c57bbc
 
 	public double getSprint1TotalWorkHours() {
 		return sprint1TotalWorkHours;
