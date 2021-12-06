@@ -3,38 +3,41 @@ package pt.iscte.es.grupo4.scrumgest;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
-import javax.swing.JPanel;
+import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.ui.ApplicationFrame;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
 
-@SuppressWarnings("serial")
-public class PieChart extends ApplicationFrame {
+public class PieChart {
 	private static double value1;
 	private static double value2;
 	private static double value3;
-	
-	private static double percentage;
 	private static String name1;
 	private static String name2;
 	private static String name3;
+	private static double percentage;
+	JFrame f;
 
 	public PieChart(String title, String name1, double value1, String name2, double value2, String name3,
 			double value3) {
-		super(title);
+		f = new JFrame(title);
+		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		PieChart.value1 = value1;
 		PieChart.value2 = value2;
 		PieChart.value3 = value3;
 		PieChart.name1 = name1;
 		PieChart.name2 = name2;
 		PieChart.name3 = name3;
-		setContentPane(createPanel());
+		JFreeChart chart = createChart(createDataset());
+		ChartPanel chartPanel = new ChartPanel(chart);
+		f.add(chartPanel);
+		
 	}
-	
+
 	static double percentage(double v){
 		double total= value1 + value2 + value3;
 		percentage = (v * 100.0)/total;
@@ -47,6 +50,18 @@ public class PieChart extends ApplicationFrame {
 		df.setRoundingMode(RoundingMode.UP);
 		}
 		return df.format(p);
+	}
+	
+	public void setSize(int x, int y) {
+		f.setSize(x, y);
+	}
+	
+	public void setVisible(boolean bool) {
+		f.setVisible(bool);
+	}
+	
+	public void setDefaultCloseOperation() {
+		f.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 	}
 	
 	public static double getValue1() {
@@ -111,17 +126,9 @@ public class PieChart extends ApplicationFrame {
 	}
 
 	private static JFreeChart createChart(PieDataset<String> dataset) {
-		JFreeChart chart = ChartFactory.createPieChart("", // chart title
-				dataset, // data
-				true, // include legend
-				true, false);
+		JFreeChart chart = ChartFactory.createPieChart("", dataset, true, true, false);
 
 		return chart;
-	}
-
-	public static JPanel createPanel() {
-		JFreeChart chart = createChart(createDataset());
-		return new ChartPanel(chart);
 	}
 
 }

@@ -2,8 +2,6 @@ package pt.iscte.es.grupo4.scrumgest;
 
 import java.awt.EventQueue;
 
-import com.julienvey.trello.domain.Card;
-
 public class Main {
 
 	/**

@@ -23,8 +23,6 @@ import org.kohsuke.github.GitHubBuilder;
 import com.julienvey.trello.Trello;
 import com.julienvey.trello.domain.*;
 import com.julienvey.trello.impl.TrelloImpl;
-import com.julienvey.trello.impl.http.ApacheHttpClient;
-
 import java.awt.Component;
 import java.awt.EventQueue;
 
@@ -63,17 +61,17 @@ public class GUI extends JFrame {
 	GHRepository repository;
 
 	/**
-	 * Create the frame.
+	 * Creates the main frame of the project.
 	 * 
 	 * @throws IOException
 	 */
 	public GUI() throws IOException {
+		setResizable(false);
 		sprint = new ArrayList<TList>();
 		sprintCards = new ArrayList<Card>();
 		setTitle("SCRUM Gest");
-		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 418, 217);
+		setBounds(100, 100, 467, 229);
 		contentPane = new JPanel();
 		setContentPane(contentPane);
 		contentPane.setLayout(new GridLayout(0, 2, 0, 0));
@@ -87,7 +85,7 @@ public class GUI extends JFrame {
 		panel.setLayout(null);
 
 		Panel panel_3 = new Panel();
-		panel_3.setBounds(0, 0, 194, 49);
+		panel_3.setBounds(0, 0, 220, 56);
 		panel.add(panel_3);
 
 		JLabel lblNewLabel = new JLabel("Project Identification");
@@ -103,7 +101,7 @@ public class GUI extends JFrame {
 		textField.setText("ES-LETI-1Sem-2021-Grupo4");
 
 		Panel panel_2 = new Panel();
-		panel_2.setBounds(0, 58, 194, 111);
+		panel_2.setBounds(0, 58, 220, 160);
 		panel.add(panel_2);
 
 		JLabel lblNewLabel_1 = new JLabel("Group Identification");
@@ -129,7 +127,7 @@ public class GUI extends JFrame {
 		panel_2.add(list);
 
 		Component verticalStrut = Box.createVerticalStrut(20);
-		verticalStrut.setBounds(190, 0, 12, 190);
+		verticalStrut.setBounds(226, 0, 22, 218);
 		panel.add(verticalStrut);
 
 		Component horizontalStrut = Box.createHorizontalStrut(20);

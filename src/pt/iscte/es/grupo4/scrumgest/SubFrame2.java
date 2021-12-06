@@ -10,9 +10,6 @@ import javax.swing.border.EmptyBorder;
 import com.julienvey.trello.domain.Action;
 import com.julienvey.trello.domain.Card;
 import com.julienvey.trello.domain.Label;
-import com.julienvey.trello.domain.Member;
-import com.julienvey.trello.domain.Membership;
-
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +53,8 @@ public class SubFrame2 extends JFrame {
 	private DefaultListModel<String> model3;
 
 	/**
-	 * Create the frame.
+	 * Creates the Trello data frame given a list of all Trello cards and a Map with
+	 * each member's user and respective cards as arguments.
 	 */
 	public SubFrame2(List<Card> cards, Map<String, List<Card>> memberCards2) {
 		this.cards = cards;

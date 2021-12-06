@@ -21,8 +21,8 @@ import javax.swing.JScrollPane;
 import javax.swing.DefaultListModel;
 import javax.swing.border.BevelBorder;
 import javax.swing.ListSelectionModel;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.event.ListSelectionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 @SuppressWarnings("serial")
 public class SubFrame1 extends JFrame {
@@ -58,7 +58,7 @@ public class SubFrame1 extends JFrame {
 	final int nSprints = 3;
 
 	/**
-	 * Create the frame.
+	 * Creates the Sprint data frame.
 	 */
 	public SubFrame1(List<Card> cards, Map<String, List<Card>> memberCards) {
 		this.cards = cards;
@@ -86,6 +86,7 @@ public class SubFrame1 extends JFrame {
 		contentPane.setLayout(null);
 
 		JPanel panel = new JPanel();
+		panel.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		panel.setBounds(10, 0, 787, 294);
 		contentPane.add(panel);
 		panel.setLayout(new BorderLayout(0, 0));
@@ -145,6 +146,28 @@ public class SubFrame1 extends JFrame {
 		list_1.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		JScrollPane scroll1 = new JScrollPane();
 		scroll1.setViewportView(list_1);
+//		list_1.addMouseListener(new MouseAdapter() {
+//			@Override
+//			public void mouseClicked(MouseEvent e) {
+//				int key = list_1.getSelectedIndex();
+//				switch (key) {
+//				case 0: {
+//
+//					break;
+//				}
+//
+//				case 1: {
+//
+//					break;
+//				}
+//				case 2: {
+//
+//					break;
+//				}
+//				}
+//			}
+//		});
+		list_1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		panel_7.add(scroll1, BorderLayout.CENTER);
 		panel_3.add(panel_8);
 		panel_8.setLayout(new BorderLayout(0, 0));
@@ -168,6 +191,7 @@ public class SubFrame1 extends JFrame {
 		scroll2.setViewportView(list_2);
 
 		JPanel panel_1 = new JPanel();
+		panel_1.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		panel_1.setBounds(415, 305, 382, 294);
 		contentPane.add(panel_1);
 		panel_1.setLayout(new BorderLayout(0, 0));
@@ -206,18 +230,30 @@ public class SubFrame1 extends JFrame {
 		panel_13.setLayout(new BorderLayout(0, 0));
 
 		JList<String> list_5 = new JList<String>();
+		list_5.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+
 		list_5.setModel(model5);
-		list_5.addListSelectionListener(new ListSelectionListener() {
-			public void valueChanged(ListSelectionEvent e) {
-				if (list_5.getSelectedIndex() == 0) {
+		list_5.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int key = list_5.getSelectedIndex();
+				switch (key) {
+				case 0: {
 					PieChart demo = new PieChart("Estimate", name_1, value_1, name_2, value_2, name_3, value_3);
-					demo.setSize(560, 367);
+					demo.setSize(500, 500);
 					demo.setVisible(true);
+					demo.setDefaultCloseOperation();
+					break;
 				}
-				if (list_5.getSelectedIndex() == 1) {
+
+				case 1: {
 					PieChart demo = new PieChart("Performed", name1, value1, name2, value2, name3, value3);
-					demo.setSize(560, 367);
+					demo.setSize(500, 500);
 					demo.setVisible(true);
+					demo.setDefaultCloseOperation();
+					break;
+				}
+
 				}
 			}
 		});
@@ -243,11 +279,13 @@ public class SubFrame1 extends JFrame {
 		panel_14.setLayout(new BorderLayout(0, 0));
 
 		JList<String> list_6 = new JList<String>();
+		list_6.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		list_6.setModel(model6);
 		list_6.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		panel_14.add(list_6);
 
 		JPanel panel_17 = new JPanel();
+		panel_17.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		panel_17.setBounds(10, 305, 382, 294);
 		contentPane.add(panel_17);
 		panel_17.setLayout(new BorderLayout(0, 0));
@@ -283,6 +321,7 @@ public class SubFrame1 extends JFrame {
 		panel_15.setLayout(new BorderLayout(0, 0));
 
 		JList<String> list_4 = new JList<String>();
+		list_4.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		list_4.setModel(model4);
 		list_4.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		panel_15.add(list_4);
@@ -305,6 +344,7 @@ public class SubFrame1 extends JFrame {
 		panel_16.setLayout(new BorderLayout(0, 0));
 
 		JList<String> list_3 = new JList<String>();
+		list_3.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		list_3.setModel(model3);
 		list_3.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		panel_16.add(list_3);

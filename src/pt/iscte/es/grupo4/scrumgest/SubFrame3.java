@@ -6,30 +6,24 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
-import java.awt.Component;
-import javax.swing.Box;
 import javax.swing.JTextArea;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
-import javax.swing.border.TitledBorder;
-
 import org.kohsuke.github.GHCommit;
 import org.kohsuke.github.GHRepository;
 
 import javax.swing.border.BevelBorder;
 import java.awt.Font;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
+import java.awt.GridLayout;
 
 @SuppressWarnings("serial")
 public class SubFrame3 extends JFrame {
@@ -40,7 +34,7 @@ public class SubFrame3 extends JFrame {
 	JTextArea textArea;
 
 	/**
-	 * Create the frame.
+	 * Creates the GitHub data frame using with a given repository as argument.
 	 * 
 	 * @throws FileNotFoundException
 	 */
@@ -48,18 +42,16 @@ public class SubFrame3 extends JFrame {
 		this.repository = repository;
 		model = new DefaultListModel<String>();
 		model_1 = new DefaultListModel<String>();
-
-		setResizable(false);
 		setTitle("Github Data");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 818, 306);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		contentPane.setLayout(null);
+		contentPane.setLayout(new GridLayout(0, 3, 0, 0));
 
 		JPanel panel = new JPanel();
-		panel.setBounds(10, 0, 143, 261);
+		panel.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		contentPane.add(panel);
 		panel.setLayout(new BorderLayout(0, 0));
 
@@ -76,7 +68,6 @@ public class SubFrame3 extends JFrame {
 
 		textArea = new JTextArea();
 		textArea.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		textArea.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		JScrollPane scrollPane = new JScrollPane(textArea);
 		textArea.setEditable(false);
 		textArea.setLineWrap(true);
@@ -84,12 +75,8 @@ public class SubFrame3 extends JFrame {
 		getReadMe();
 		panel_4.add(scrollPane, BorderLayout.CENTER);
 
-		Component verticalStrut = Box.createVerticalStrut(20);
-		verticalStrut.setBounds(155, 0, 12, 261);
-		contentPane.add(verticalStrut);
-
 		JPanel panel_1 = new JPanel();
-		panel_1.setBounds(166, 0, 309, 260);
+		panel_1.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		contentPane.add(panel_1);
 		panel_1.setLayout(new BorderLayout(0, 0));
 
@@ -112,12 +99,8 @@ public class SubFrame3 extends JFrame {
 		list.setModel(model);
 		getTags();
 
-		Component verticalStrut_1 = Box.createVerticalStrut(20);
-		verticalStrut_1.setBounds(471, 0, 0, 261);
-		contentPane.add(verticalStrut_1);
-
 		JPanel panel_2 = new JPanel();
-		panel_2.setBounds(485, 0, 309, 261);
+		panel_2.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		contentPane.add(panel_2);
 		panel_2.setLayout(new BorderLayout(0, 0));
 
