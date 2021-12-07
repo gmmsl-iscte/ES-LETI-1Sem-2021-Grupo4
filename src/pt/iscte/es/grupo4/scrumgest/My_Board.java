@@ -1,5 +1,8 @@
 package pt.iscte.es.grupo4.scrumgest;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,92 +21,65 @@ public class My_Board {
 	List<Card> cards = new ArrayList<Card>();
 
 	final int COSTPERHOUR = 20;
-	double sprint1TotalWorkHours = 0;
-	double sprint2TotalWorkHours = 0;
-	double sprint3TotalWorkHours = 0;
-	double sprint1PlannedWorkHours = 0;
-	double sprint2PlannedWorkHours = 0;
-	double sprint3PlannedWorkHours = 0;
-	double sprint1TotalCost = 0;
-	double sprint2TotalCost = 0;
-	double sprint3TotalCost = 0;
+
+	/** Array structure [Sara,Fabio,Goncalo]* */
+	double sprint1WorkAndPlannedHoursByMember[] = { 0, 0, 0, 0, 0, 0 };
+	double sprint2WorkAndPlannedHoursByMember[] = { 0, 0, 0, 0, 0, 0 };
+	double sprint3WorkAndPlannedHoursByMember[] = { 0, 0, 0, 0, 0, 0 };
+	double sprint1TeamCost[] = { 0, 0, 0 };
+	double sprint2TeamCost[] = { 0, 0, 0 };
+	double sprint3TeamCost[] = { 0, 0, 0 };
 
 //	public My_Board(List<Card> cards) {
 //		this.cards = cards;
 //	}
-	double sprint3totalCost = 0;
 
-	public double getSprint1TotalCost() {
-		return sprint1TotalCost;
+	public double[] getsprint1TeamCost() {
+		return sprint1TeamCost;
 	}
 
-	public void setSprint1TotalCost(double sprint1TotalCost) {
-		this.sprint1TotalCost = sprint1TotalCost;
+	public void setsprint1TeamCost(double[] sprint1TeamCost) {
+		this.sprint1TeamCost = sprint1TeamCost;
 	}
 
-	public double getSprint2TotalCost() {
-		return sprint2TotalCost;
+	public double[] getsprint2TeamCost() {
+		return sprint2TeamCost;
 	}
 
-	public void setSprint2TotalCost(double sprint2TotalCost) {
-		this.sprint2TotalCost = sprint2TotalCost;
+	public void setsprint2TeamCost(double[] sprint2TeamCost) {
+		this.sprint2TeamCost = sprint2TeamCost;
 	}
 
-	public double getSprint3totalCost() {
-		return sprint3TotalCost;
+	public double[] getsprint3TeamCost() {
+		return sprint3TeamCost;
 	}
 
-	public void setSprint3totalCost(double sprint3totalCost) {
-		this.sprint3TotalCost = sprint3totalCost;
+	public void setsprint3TeamCost(double[] sprint3TeamCost) {
+		this.sprint3TeamCost = sprint3TeamCost;
 	}
 
-	public double getSprint1PlannedWorkHours() {
-		return sprint1PlannedWorkHours;
+	public double[] getsprint1WorkAndPlannedHoursByMember() {
+		return sprint1WorkAndPlannedHoursByMember;
 	}
 
-	public void setSprint1PlannedWorkHours(double sprint1PlannedWorkHours) {
-		this.sprint1PlannedWorkHours = sprint1PlannedWorkHours;
+	public double[] getsprint2WorkAndPlannedHoursByMember() {
+		return sprint2WorkAndPlannedHoursByMember;
 	}
 
-	public double getSprint2PlannedWorkHours() {
-		return sprint2PlannedWorkHours;
+	public double[] getsprint3WorkAndPlannedHoursByMember() {
+		return sprint3WorkAndPlannedHoursByMember;
 	}
 
-	public void setSprint2PlannedWorkHours(double sprint2PlannedWorkHours) {
-		this.sprint2PlannedWorkHours = sprint2PlannedWorkHours;
+	public void setsprint1WorkAndPlannedHoursByMember(double[] sprint1WorkAndPlannedHoursByMember) {
+		this.sprint1WorkAndPlannedHoursByMember = sprint1WorkAndPlannedHoursByMember;
 	}
 
-
-	public double getSprint3PlannedWorkHours() {
-		return sprint3PlannedWorkHours;
+	public void setsprint2WorkAndPlannedHoursByMember(double[] sprint2WorkAndPlannedHoursByMember) {
+		this.sprint2WorkAndPlannedHoursByMember = sprint2WorkAndPlannedHoursByMember;
 	}
 
-	public void setSprint3PlannedWorkHours(double sprint3PlannedWorkHours) {
-		this.sprint3PlannedWorkHours = sprint3PlannedWorkHours;
-	}
-
-	public double getSprint1TotalWorkHours() {
-		return sprint1TotalWorkHours;
-	}
-
-	public double getSprint2TotalWorkHours() {
-		return sprint2TotalWorkHours;
-	}
-
-	public double getSprint3TotalWorkHours() {
-		return sprint3TotalWorkHours;
-	}
-
-	public void setSprint1TotalWorkHours(double sprint1TotalWorkHours) {
-		this.sprint1TotalWorkHours = sprint1TotalWorkHours;
-	}
-
-	public void setSprint2TotalWorkHours(double sprint2TotalWorkHours) {
-		this.sprint2TotalWorkHours = sprint2TotalWorkHours;
-	}
-
-	public void setSprint3TotalWorkHours(double sprint3TotalWorkHours) {
-		this.sprint3TotalWorkHours = sprint3TotalWorkHours;
+	public void setsprint3WorkAndPlannedHoursByMember(double[] sprint3WorkAndPlannedHoursByMember) {
+		this.sprint3WorkAndPlannedHoursByMember = sprint3WorkAndPlannedHoursByMember;
 	}
 
 	@SuppressWarnings("deprecation")
@@ -118,61 +94,67 @@ public class My_Board {
 		cards = trelloApi.getBoardCards("uZFHCkJo");
 	}
 
-	public double caltulateTotalWorkingHoursPerSprint(String StringID) {
-		double totalhours = 0;
+	public double[] caltulateTotalWorkingAndPlanedHoursPerSprintForEachMember(String StringID) {
+		double[] totalhours = { 0, 0, 0, 0, 0, 0 };
 		for (Card card : cards) {
 			List<Label> labels = card.getLabels();
 			for (Label label : labels) {
 				if (label.getName().equals(StringID))
 					for (Action comment : card.getActions()) {
+
 						String card_coment = comment.getData().getText();
 						if ((card_coment != null) && card_coment.startsWith("plus!") && !card_coment.contains("@")) {
 							String[] parts = card_coment.substring(6).split("/");
-							totalhours += Double.parseDouble(parts[0]);
+							if (comment.getMemberCreator().getFullName().startsWith("Sara")) {
+								totalhours[0] += Double.parseDouble(parts[0]);
+								totalhours[3] += Double.parseDouble(parts[1]);
+							}
+							if (comment.getMemberCreator().getFullName().startsWith("Fabio")) {
+								totalhours[1] += Double.parseDouble(parts[0]);
+								totalhours[4] += Double.parseDouble(parts[1]);
+							}
+							if (comment.getMemberCreator().getFullName().startsWith("Gonçalo")) {
+								totalhours[2] += Double.parseDouble(parts[0]);
+								totalhours[5] += Double.parseDouble(parts[1]);
+							}
 						}
 					}
 			}
 		}
+
+//		for (double d : totalhours) {
+//			System.out.println(d);
+//		}
+
 		return totalhours;
 	}
 
-	public double caltulatePlannedHoursPerSprint(String StringID) {
-		double plannedhours = 0;
-		for (Card card : cards) {
-			List<Label> labels = card.getLabels();
-			for (Label label : labels) {
-				if (label.getName().equals(StringID))
-					for (Action comment : card.getActions()) {
-						String card_coment = comment.getData().getText();
-						if ((card_coment != null) && card_coment.startsWith("plus!") && !card_coment.contains("@")) {
-							String[] parts = card_coment.substring(6).split("/");
-							plannedhours += Double.parseDouble(parts[1]);
-						}
-					}
-			}
-		}
-		return plannedhours;
-	}
-
 	public void calculateAllHours() {
-		setSprint1TotalWorkHours(caltulateTotalWorkingHoursPerSprint("SPRINT1"));
-		setSprint2TotalWorkHours(caltulateTotalWorkingHoursPerSprint("SPRINT2"));
-		setSprint3TotalWorkHours(caltulateTotalWorkingHoursPerSprint("SPRINT3"));
-
-		setSprint1PlannedWorkHours(caltulatePlannedHoursPerSprint("SPRINT1"));
-		setSprint2PlannedWorkHours(caltulatePlannedHoursPerSprint("SPRINT2"));
-		setSprint3PlannedWorkHours(caltulatePlannedHoursPerSprint("SPRINT3"));
+		setsprint1WorkAndPlannedHoursByMember(caltulateTotalWorkingAndPlanedHoursPerSprintForEachMember("SPRINT1"));
+		setsprint2WorkAndPlannedHoursByMember(caltulateTotalWorkingAndPlanedHoursPerSprintForEachMember("SPRINT2"));
+		setsprint3WorkAndPlannedHoursByMember(caltulateTotalWorkingAndPlanedHoursPerSprintForEachMember("SPRINT3"));
 
 	}
 
-	public double calculateTotalCostPerSprint(String StringID) {
-		return caltulateTotalWorkingHoursPerSprint(StringID) * COSTPERHOUR;
+	public double[] calculateTotalCostPerSprint(double[] sprinthours) {
+		double[] sprintcost = { sprinthours[0] * COSTPERHOUR, sprinthours[1] * COSTPERHOUR,
+				sprinthours[2] * COSTPERHOUR };
+		return sprintcost;
 	}
 
 	public void calculateEachSprintCost() {
-		setSprint1TotalCost(sprint1TotalWorkHours * COSTPERHOUR);
-		setSprint2TotalCost(sprint2TotalWorkHours * COSTPERHOUR);
-		setSprint3totalCost(sprint3TotalWorkHours * COSTPERHOUR);
+		setsprint1TeamCost(calculateTotalCostPerSprint(getsprint1WorkAndPlannedHoursByMember()));
+		setsprint2TeamCost(calculateTotalCostPerSprint(getsprint2WorkAndPlannedHoursByMember()));
+		setsprint3TeamCost(calculateTotalCostPerSprint(getsprint3WorkAndPlannedHoursByMember()));
+
+	}
+
+	public double eachSprintcost(double[] SprintXTotalCost) {
+		double spXTotalcost = 0;
+		for (double cost : SprintXTotalCost) {
+			spXTotalcost += cost;
+		}
+		return spXTotalcost;
 
 	}
 
@@ -182,28 +164,29 @@ public class My_Board {
 		calculateAllHours();
 		calculateEachSprintCost();
 	}
-}
+	
+	
+	public void export_to_cvs() throws FileNotFoundException, UnsupportedEncodingException {
+		PrintWriter writer = new PrintWriter("C:/Users/facruz/Desktop/exporttest.txt", "UTF-8");
+		writer.println("The first line");
+		writer.println("The second line");
+		writer.close();
+	}
+//}
 
 // Used for class testing
-//	public static void main(String[] args) throws InterruptedException {
-//		My_Board test_board = new My_Board();
-//	
-//		test_board.loadAllTheInformation();
-//		Thread.sleep(2000);
-//		System.out.println("Each Sprint worked hours");
-//		System.out.println(test_board.sprint1TotalWorkHours);
-//		System.out.println(test_board.sprint2TotalWorkHours);
-//		System.out.println(test_board.sprint3TotalWorkHours);
-//		
-//		System.out.println("Each Sprint Planed hours");
-//		System.out.println(test_board.sprint1PlannedWorkHours);
-//		System.out.println(test_board.sprint2PlannedWorkHours);
-//		System.out.println(test_board.sprint3PlannedWorkHours);
-//		
-//		System.out.println("Each Sprint Cost");
-//		System.out.println(test_board.sprint1TotalCost);
-//		System.out.println(test_board.sprint2TotalCost);
-//		System.out.println(test_board.sprint3TotalCost);
-//		
-//	}
-//}
+	public static void main(String[] args) throws InterruptedException, FileNotFoundException, UnsupportedEncodingException {
+		My_Board test_board = new My_Board();
+		test_board.loadAllTheInformation();
+		
+		test_board.export_to_cvs();
+		
+		System.out.println("Sprint1");
+		test_board.caltulateTotalWorkingAndPlanedHoursPerSprintForEachMember("SPRINT1");
+		System.out.println("Sprint2");
+		test_board.caltulateTotalWorkingAndPlanedHoursPerSprintForEachMember("SPRINT2");
+		System.out.println("Sprint3");
+		test_board.caltulateTotalWorkingAndPlanedHoursPerSprintForEachMember("SPRINT3");
+		System.out.println("End of test");
+	}
+}
