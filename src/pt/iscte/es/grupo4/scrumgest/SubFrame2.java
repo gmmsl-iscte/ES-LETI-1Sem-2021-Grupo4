@@ -147,16 +147,19 @@ public class SubFrame2 extends JFrame {
 							String card_coment = comment.getData().getText();
 							if ((card_coment != null) && card_coment.startsWith("plus!")
 									&& !card_coment.contains("@")) {
-								String[] parts = card_coment.substring(6).split("/");
-								totalhours += Double.parseDouble(parts[0]);
+								if (comment.getMemberCreator().getUsername().equals(set.getKey())) {
+									String[] parts = card_coment.substring(6).split("/");
+									totalhours += Double.parseDouble(parts[0]);
+								}
 
 							}
 						}
 					}
 				}
 			}
-			model.addElement("Member: " + set.getKey() + " Activities: " + numArtifacts + " Hours: " + totalhours + "h"
-					+ " Cost: " + totalhours * 20 + "$");
+			model.addElement("Member: " + set.getKey() + " Activities: " + numArtifacts + " Hours: "
+					+ (Math.round(totalhours * 100) / 100.00) + "h" + " Cost: "
+					+ (Math.round((totalhours * 20) * 100) / 100.00) + "€");
 		}
 	}
 
@@ -175,16 +178,18 @@ public class SubFrame2 extends JFrame {
 							String card_coment = comment.getData().getText();
 							if ((card_coment != null) && card_coment.startsWith("plus!")
 									&& !card_coment.contains("@")) {
-								String[] parts = card_coment.substring(6).split("/");
-								totalhours += Double.parseDouble(parts[0]);
-
+								if (comment.getMemberCreator().getUsername().equals(set.getKey())) {
+									String[] parts = card_coment.substring(6).split("/");
+									totalhours += Double.parseDouble(parts[0]);
+								}
 							}
 						}
 					}
 				}
 			}
-			model2.addElement("Member: " + set.getKey() + " Activities: " + numActivities + " Hours: " + totalhours
-					+ "h" + " Cost: " + totalhours * 20 + "$");
+			model2.addElement("Member: " + set.getKey() + " Activities: " + numActivities + " Hours: "
+					+ (Math.round(totalhours * 100) / 100.00) + "h" + " Cost: "
+					+ (Math.round((totalhours * 20) * 100) / 100.00) + "€");
 		}
 	}
 
@@ -230,7 +235,7 @@ public class SubFrame2 extends JFrame {
 				}
 			}
 		}
-		return totalhours;
+		return (Math.round(totalhours * 100) / 100.00);
 	}
 
 	public double HoursTotal2() {
@@ -245,21 +250,21 @@ public class SubFrame2 extends JFrame {
 				}
 			}
 		}
-		return totalhours;
+		return (Math.round(totalhours * 100) / 100.00);
 	}
 
 	public double costTotal1() {
-		return HoursTotal1() * 20;
+		return Math.round((HoursTotal1() * 20) * 100) / 100.00;
 	}
 
 	public double costTotal2() {
-		return HoursTotal2() * 20;
+		return Math.round((HoursTotal2() * 20) * 100) / 100.00;
 	}
 
 	public void listUpdate() {
 		model1.addElement("Activities: " + ActivitiesTotal1() + " Hours: " + HoursTotal1() + "h" + " Cost: "
-				+ costTotal1() + "$");
+				+ costTotal1() + "€");
 		model3.addElement("Activities: " + ActivitiesTotal2() + " Hours: " + HoursTotal2() + "h" + " Cost: "
-				+ costTotal2() + "$");
+				+ costTotal2() + "€");
 	}
 }

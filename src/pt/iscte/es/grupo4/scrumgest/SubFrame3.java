@@ -153,7 +153,11 @@ public class SubFrame3 extends JFrame {
 			readme.add(data);
 		}
 
-		textArea.setText(readme.toString());
+		String text = "";
+		for (String string : readme) {
+			text = text + "\n" + string;
+		}
+		textArea.setText(text);
 
 	}
 

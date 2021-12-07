@@ -39,6 +39,16 @@ public class SubFrame1 extends JFrame {
 	double value_2;
 	double value_3;
 
+	double sprint1;
+	double sprint2;
+	double sprint3;
+	double sprint_1;
+	double sprint_2;
+	double sprint_3;
+	String SPRINT1 = "SPRINT1";
+	String SPRINT2 = "SPRINT2";
+	String SPRINT3 = "SPRINT3";
+
 	List<TList> sprint;
 	List<Card> cards;
 	private Map<String, List<Card>> memberCards;
@@ -63,6 +73,12 @@ public class SubFrame1 extends JFrame {
 	public SubFrame1(List<Card> cards, Map<String, List<Card>> memberCards) {
 		this.cards = cards;
 		this.memberCards = memberCards;
+		sprint1 = getPlannedHoursBySprint("SPRINT1");
+		sprint2 = getPlannedHoursBySprint("SPRINT2");
+		sprint3 = getPlannedHoursBySprint("SPRINT3");
+		sprint_1 = getTotalHoursBySprint("SPRINT1");
+		sprint_2 = getTotalHoursBySprint("SPRINT2");
+		sprint_3 = getTotalHoursBySprint("SPRINT3");
 		model = new DefaultListModel<>();
 		model1 = new DefaultListModel<String>();
 		model2 = new DefaultListModel<String>();
@@ -71,9 +87,8 @@ public class SubFrame1 extends JFrame {
 		model5 = new DefaultListModel<String>();
 		model6 = new DefaultListModel<String>();
 
-		DevelopedProducts();
 		SprintDuration();
-		MeetingText();
+
 		getHoursByMember();
 
 		setResizable(false);
@@ -104,8 +119,11 @@ public class SubFrame1 extends JFrame {
 		panel_3.setLayout(new GridLayout(1, 5, 0, 0));
 
 		JPanel panel_6 = new JPanel();
+		panel_6.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		JPanel panel_7 = new JPanel();
+		panel_7.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		JPanel panel_8 = new JPanel();
+		panel_8.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 
 		panel_3.add(panel_6);
 		panel_6.setLayout(new BorderLayout(0, 0));
@@ -122,7 +140,7 @@ public class SubFrame1 extends JFrame {
 		panel_6.add(txtrDevelopedProductBacklog, BorderLayout.NORTH);
 
 		list = new JList<String>();
-		list.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		list.setBorder(null);
 		list.setModel(model);
 		JScrollPane scroll = new JScrollPane();
 		scroll.setViewportView(list);
@@ -132,7 +150,7 @@ public class SubFrame1 extends JFrame {
 		panel_7.setLayout(new BorderLayout(0, 0));
 
 		JTextArea txtrSprintBeginningAnd = new JTextArea();
-		txtrSprintBeginningAnd.setText("SPRINT beginning and end date");
+		txtrSprintBeginningAnd.setText("Select a SPRINT here");
 		txtrSprintBeginningAnd.setFont(new Font("Tahoma", Font.BOLD, 11));
 		txtrSprintBeginningAnd.setWrapStyleWord(true);
 		txtrSprintBeginningAnd.setLineWrap(true);
@@ -143,30 +161,45 @@ public class SubFrame1 extends JFrame {
 
 		list_1 = new JList<String>();
 		list_1.setModel(model1);
-		list_1.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		list_1.setBorder(null);
 		JScrollPane scroll1 = new JScrollPane();
 		scroll1.setViewportView(list_1);
-//		list_1.addMouseListener(new MouseAdapter() {
-//			@Override
-//			public void mouseClicked(MouseEvent e) {
-//				int key = list_1.getSelectedIndex();
-//				switch (key) {
-//				case 0: {
-//
-//					break;
-//				}
-//
-//				case 1: {
-//
-//					break;
-//				}
-//				case 2: {
-//
-//					break;
-//				}
-//				}
-//			}
-//		});
+		list_1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int key = list_1.getSelectedIndex();
+				switch (key) {
+				case 0: {
+					model.removeAllElements();
+					model2.removeAllElements();
+					DevelopedProducts();
+					MeetingText();
+					filterModel(model, "SPRINT 1");
+					filterModel(model2, "SPRINT 1");
+					break;
+				}
+
+				case 1: {
+					model.removeAllElements();
+					model2.removeAllElements();
+					DevelopedProducts();
+					MeetingText();
+					filterModel(model, "SPRINT 2");
+					filterModel(model2, "SPRINT 2");
+					break;
+				}
+				case 2: {
+					model.removeAllElements();
+					model2.removeAllElements();
+					DevelopedProducts();
+					MeetingText();
+					filterModel(model, "SPRINT 3");
+					filterModel(model2, "SPRINT 3");
+					break;
+				}
+				}
+			}
+		});
 		list_1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		panel_7.add(scroll1, BorderLayout.CENTER);
 		panel_3.add(panel_8);
@@ -187,7 +220,7 @@ public class SubFrame1 extends JFrame {
 
 		JList<String> list_2 = new JList<String>();
 		list_2.setModel(model2);
-		list_2.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		list_2.setBorder(null);
 		scroll2.setViewportView(list_2);
 
 		JPanel panel_1 = new JPanel();
@@ -209,7 +242,9 @@ public class SubFrame1 extends JFrame {
 		panel_5.setLayout(new GridLayout(1, 2, 0, 0));
 
 		JPanel panel_11 = new JPanel();
+		panel_11.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		JPanel panel_12 = new JPanel();
+		panel_12.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 
 		panel_5.add(panel_11);
 		panel_11.setLayout(new BorderLayout(0, 0));
@@ -230,7 +265,7 @@ public class SubFrame1 extends JFrame {
 		panel_13.setLayout(new BorderLayout(0, 0));
 
 		JList<String> list_5 = new JList<String>();
-		list_5.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		list_5.setBorder(null);
 
 		list_5.setModel(model5);
 		list_5.addMouseListener(new MouseAdapter() {
@@ -239,7 +274,7 @@ public class SubFrame1 extends JFrame {
 				int key = list_5.getSelectedIndex();
 				switch (key) {
 				case 0: {
-					PieChart demo = new PieChart("Estimate", name_1, value_1, name_2, value_2, name_3, value_3);
+					PieChart demo = new PieChart("Estimate", name_1, value_1, name_2, value_2, name_3, value_3, 0);
 					demo.setSize(500, 500);
 					demo.setVisible(true);
 					demo.setDefaultCloseOperation();
@@ -247,7 +282,7 @@ public class SubFrame1 extends JFrame {
 				}
 
 				case 1: {
-					PieChart demo = new PieChart("Performed", name1, value1, name2, value2, name3, value3);
+					PieChart demo = new PieChart("Performed", name1, value1, name2, value2, name3, value3, 0);
 					demo.setSize(500, 500);
 					demo.setVisible(true);
 					demo.setDefaultCloseOperation();
@@ -279,8 +314,21 @@ public class SubFrame1 extends JFrame {
 		panel_14.setLayout(new BorderLayout(0, 0));
 
 		JList<String> list_6 = new JList<String>();
-		list_6.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		list_6.setBorder(null);
 		list_6.setModel(model6);
+		model6.addElement("Total cost");
+
+		list_6.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+
+				PieChart demo = new PieChart("Total cost", name1, value1, name2, value2, name3, value3, 1);
+				demo.setSize(500, 500);
+				demo.setVisible(true);
+				demo.setDefaultCloseOperation();
+
+			}
+		});
 		list_6.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		panel_14.add(list_6);
 
@@ -302,6 +350,7 @@ public class SubFrame1 extends JFrame {
 		panel_17.add(panel_18, BorderLayout.CENTER);
 		panel_18.setLayout(new GridLayout(1, 2, 0, 0));
 		JPanel panel_9 = new JPanel();
+		panel_9.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		panel_18.add(panel_9);
 
 		panel_9.setLayout(new BorderLayout(0, 0));
@@ -321,11 +370,40 @@ public class SubFrame1 extends JFrame {
 		panel_15.setLayout(new BorderLayout(0, 0));
 
 		JList<String> list_4 = new JList<String>();
-		list_4.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		list_4.setBorder(null);
 		list_4.setModel(model4);
+
+		model4.addElement("Planned");
+		model4.addElement("Performed");
+		list_4.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int key = list_4.getSelectedIndex();
+				switch (key) {
+				case 0: {
+
+					PieChart demo = new PieChart("Planned", SPRINT1, sprint1, SPRINT2, sprint2, SPRINT3, sprint3, 0);
+					demo.setSize(500, 500);
+					demo.setVisible(true);
+					demo.setDefaultCloseOperation();
+					break;
+				}
+				case 1: {
+
+					PieChart demo = new PieChart("Performed", SPRINT1, sprint_1, SPRINT2, sprint_2, SPRINT3, sprint_3,
+							0);
+					demo.setSize(500, 500);
+					demo.setVisible(true);
+					demo.setDefaultCloseOperation();
+					break;
+				}
+				}
+			}
+		});
 		list_4.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		panel_15.add(list_4);
 		JPanel panel_10 = new JPanel();
+		panel_10.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		panel_18.add(panel_10);
 		panel_10.setLayout(new BorderLayout(0, 0));
 
@@ -344,8 +422,36 @@ public class SubFrame1 extends JFrame {
 		panel_16.setLayout(new BorderLayout(0, 0));
 
 		JList<String> list_3 = new JList<String>();
-		list_3.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		list_3.setBorder(null);
 		list_3.setModel(model3);
+		model3.addElement("Planned");
+		model3.addElement("Performed");
+		list_3.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int key = list_3.getSelectedIndex();
+				switch (key) {
+				case 0: {
+
+					PieChart demo = new PieChart("Planned", SPRINT1, sprint1, SPRINT2, sprint2, SPRINT3, sprint3, 1);
+					demo.setSize(500, 500);
+					demo.setVisible(true);
+					demo.setDefaultCloseOperation();
+					break;
+				}
+				case 1: {
+
+					PieChart demo = new PieChart("Performed", SPRINT1, sprint_1, SPRINT2, sprint_2, SPRINT3, sprint_3,
+							1);
+					demo.setSize(500, 500);
+					demo.setVisible(true);
+					demo.setDefaultCloseOperation();
+					break;
+				}
+				}
+			}
+		});
+
 		list_3.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		panel_16.add(list_3);
 
@@ -473,7 +579,8 @@ public class SubFrame1 extends JFrame {
 		My_Board board = new My_Board();
 		board.calculateAllHours();
 		// board.calculateCostTotal();
-		//System.out.println(board.getSprint1TotalWorkHours() + " - " + board.getSprint1TotalCost());
+		// System.out.println(board.getSprint1TotalWorkHours() + " - " +
+		// board.getSprint1TotalCost());
 	}
 
 	public void getHoursByMember() {
@@ -488,11 +595,13 @@ public class SubFrame1 extends JFrame {
 				for (Action comment : card.getActions()) {
 					String card_coment = comment.getData().getText();
 					if ((card_coment != null) && card_coment.startsWith("plus!") && !card_coment.contains("@")) {
-						String[] parts = card_coment.substring(6).split("/");
-						totalhours += Double.parseDouble(parts[0]);
-						estimatehours += Double.parseDouble(parts[1]);
-						hours.put(set.getKey(), totalhours);
-						estimate.put(set.getKey(), estimatehours);
+						if (comment.getMemberCreator().getUsername().equals(set.getKey())) {
+							String[] parts = card_coment.substring(6).split("/");
+							totalhours += Double.parseDouble(parts[0]);
+							estimatehours += Double.parseDouble(parts[1]);
+							hours.put(set.getKey(), totalhours);
+							estimate.put(set.getKey(), estimatehours);
+						}
 					}
 				}
 			}
@@ -516,6 +625,74 @@ public class SubFrame1 extends JFrame {
 		model5.addElement("Estimate");
 		model5.addElement("Performed");
 
+	}
+
+	public double getPlannedHoursBySprint(String sprint) {
+		double estimatehours = 0;
+		for (Card card : cards) {
+			List<Label> labels = card.getLabels();
+			for (Label label : labels) {
+				if (label.getName().equals(sprint)) {
+					for (Action comment : card.getActions()) {
+						String card_coment = comment.getData().getText();
+						if ((card_coment != null) && card_coment.startsWith("plus!") && !card_coment.contains("@")) {
+							String[] parts = card_coment.substring(6).split("/");
+							estimatehours += Double.parseDouble(parts[1]);
+
+						}
+
+					}
+				}
+
+			}
+		}
+		return estimatehours;
+	}
+
+	public double getTotalHoursBySprint(String sprint) {
+		double totalhours = 0;
+		for (Card card : cards) {
+			List<Label> labels = card.getLabels();
+			for (Label label : labels) {
+				if (label.getName().equals(sprint)) {
+					for (Action comment : card.getActions()) {
+						String card_coment = comment.getData().getText();
+						if ((card_coment != null) && card_coment.startsWith("plus!") && !card_coment.contains("@")) {
+							String[] parts = card_coment.substring(6).split("/");
+							totalhours += Double.parseDouble(parts[0]);
+						}
+					}
+				}
+
+			}
+
+		}
+		return totalhours;
+
+	}
+
+	public List<String> modelValues(DefaultListModel<String> model) {
+		List<String> modelValues = new ArrayList<String>();
+		for (int i = 0; i < model.getSize(); i++) {
+			modelValues.add(model.getElementAt(i));
+		}
+		return modelValues;
+
+	}
+
+	public void filterModel(DefaultListModel<String> model, String filter) {
+		List<String> modelValues = modelValues(model);
+		for (String s : modelValues) {
+			if (!s.startsWith(filter)) {
+				if (model.contains(s)) {
+					model.removeElement(s);
+				}
+			} else {
+				if (!model.contains(s)) {
+					model.addElement(s);
+				}
+			}
+		}
 	}
 
 //	public void getHours() {

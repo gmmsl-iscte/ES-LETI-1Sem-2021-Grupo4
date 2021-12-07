@@ -229,11 +229,17 @@ public class GUI extends JFrame {
 		}
 	}
 
-	public void GitHubConnect() throws IOException {
+	public void GitHubConnect() {
 		String token = JOptionPane.showInputDialog("Please enter your GitHub authentication token.");
-		GitHub github = new GitHubBuilder().withOAuthToken(token).build();
+		GitHub github;
+		try {
+			github = new GitHubBuilder().withOAuthToken(token).build();
+			repository = github.getRepository("gmmsl-iscte/ES-LETI-1Sem-2021-Grupo4");
+		} catch (IOException e) {
+		JOptionPane.showMessageDialog(contentPane, "Invalid token","Warning", JOptionPane.WARNING_MESSAGE );
+		 System.exit(0);
+		}
 
-		repository = github.getRepository("gmmsl-iscte/ES-LETI-1Sem-2021-Grupo4");
 
 	}
 

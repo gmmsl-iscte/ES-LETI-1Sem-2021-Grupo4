@@ -4,17 +4,13 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import com.julienvey.trello.Trello;
 import com.julienvey.trello.domain.Action;
-import com.julienvey.trello.domain.Board;
 import com.julienvey.trello.domain.Card;
 import com.julienvey.trello.domain.Label;
-import com.julienvey.trello.domain.TList;
 import com.julienvey.trello.impl.TrelloImpl;
-import com.julienvey.trello.impl.http.ApacheHttpClient;
 
 public class My_Board {
 	Trello trelloApi;
