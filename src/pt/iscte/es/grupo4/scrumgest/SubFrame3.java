@@ -24,7 +24,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 import java.awt.GridLayout;
-
+/**
+ * @author sarag
+ *
+ */
 @SuppressWarnings("serial")
 public class SubFrame3 extends JFrame {
 	private DefaultListModel<String> model;
@@ -125,6 +128,10 @@ public class SubFrame3 extends JFrame {
 
 	}
 
+	/**
+	 * This method retrieves the commit's tags from the given repository, adding
+	 * them and their date to the DefaultListModel.
+	 */
 	public void getTags() {
 
 		for (GHCommit commit : repository.listCommits()) {
@@ -143,6 +150,12 @@ public class SubFrame3 extends JFrame {
 		}
 	}
 
+	/**
+	 * This method retrieves the content from the README.md file and adds its
+	 * content to the GUI.
+	 * 
+	 * @throws FileNotFoundException
+	 */
 	public void getReadMe() throws FileNotFoundException {
 		List<String> readme = new ArrayList<String>();
 		File file = new File("README.md");
@@ -161,6 +174,10 @@ public class SubFrame3 extends JFrame {
 
 	}
 
+	/**
+	 * This method retrieves the commits from the given repository and adds the to
+	 * the DefaultListModel, specifying the date of commit and the author.
+	 */
 	public void getCommits() {
 		List<String> elements = new ArrayList<String>();
 		for (GHCommit commit : repository.listCommits()) {

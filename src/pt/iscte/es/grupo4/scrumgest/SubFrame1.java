@@ -23,7 +23,10 @@ import javax.swing.border.BevelBorder;
 import javax.swing.ListSelectionModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
+/**
+ * @author sarag
+ *
+ */
 @SuppressWarnings("serial")
 public class SubFrame1 extends JFrame {
 	String name1;
@@ -69,6 +72,10 @@ public class SubFrame1 extends JFrame {
 
 	/**
 	 * Creates the Sprint data frame.
+	 * 
+	 * @param cards       refers to a List of cards retrieved from a Trello board
+	 * @param memberCards refers to a Map which contains the Trello cards
+	 *                    correspondent to each Trello board member
 	 */
 	public SubFrame1(List<Card> cards, Map<String, List<Card>> memberCards) {
 		this.cards = cards;
@@ -457,6 +464,11 @@ public class SubFrame1 extends JFrame {
 
 	}
 
+	/**
+	 * This method retrieves the developed products from the main list of cards,
+	 * organizing them by SPRINT and adding the information to the correspondent
+	 * DefaultListModel
+	 */
 	public void DevelopedProducts() {
 		List<Card> devCards = new ArrayList<Card>();
 
@@ -484,6 +496,10 @@ public class SubFrame1 extends JFrame {
 		}
 	}
 
+	/**
+	 * This method retrieves the text correspondent to the meetings, from the main
+	 * list of cards, organizing them by their corresponding SPRINT.
+	 */
 	public void MeetingText() {
 		List<Card> sprint1 = new ArrayList<Card>();
 		List<Card> sprint2 = new ArrayList<Card>();
@@ -557,6 +573,11 @@ public class SubFrame1 extends JFrame {
 		}
 	}
 
+	/**
+	 * This method retrieves the information regarding the duration of each SPRINT
+	 * from the main List of cards, adding the obtained information to a
+	 * DefaultListModel.
+	 */
 	public void SprintDuration() {
 		for (Card card : cards) {
 			for (int j = 0; j < card.getLabels().size(); j++) {
@@ -575,14 +596,12 @@ public class SubFrame1 extends JFrame {
 
 	}
 
-	public void getHours() {
-		My_Board board = new My_Board();
-		board.calculateAllHours();
-		// board.calculateCostTotal();
-		// System.out.println(board.getSprint1TotalWorkHours() + " - " +
-		// board.getSprint1TotalCost());
-	}
-
+	/**
+	 * This method calculates the hours performed by team member from the main
+	 * memberCards Map. After retrieving the necessary values, these are matched to
+	 * the variables declared above, so that this information can be used to
+	 * generate Pie Charts later.
+	 */
 	public void getHoursByMember() {
 		double totalhours;
 		double estimatehours;
@@ -627,6 +646,13 @@ public class SubFrame1 extends JFrame {
 
 	}
 
+	/**
+	 * This method calculates all the planned hours of work within a SPRINT.
+	 * 
+	 * @param sprint corresponds to a filter, that can be used to specify the
+	 *               desired SPRINT.
+	 * @return the planned hours of work, as a double.
+	 */
 	public double getPlannedHoursBySprint(String sprint) {
 		double estimatehours = 0;
 		for (Card card : cards) {
@@ -649,6 +675,13 @@ public class SubFrame1 extends JFrame {
 		return estimatehours;
 	}
 
+	/**
+	 * This method calculates all the worked hours within a SPRINT.
+	 * 
+	 * @param sprint corresponds to a filter, that can be used to specify the
+	 *               desired SPRINT.
+	 * @return the hours of work, as a double.
+	 */
 	public double getTotalHoursBySprint(String sprint) {
 		double totalhours = 0;
 		for (Card card : cards) {
@@ -671,6 +704,13 @@ public class SubFrame1 extends JFrame {
 
 	}
 
+	/**
+	 * This method retrieves the values within a DefaultListModel and puts them in a
+	 * regular List.
+	 * 
+	 * @param model represents the DefaultListModel to be used.
+	 * @return the populated list.
+	 */
 	public List<String> modelValues(DefaultListModel<String> model) {
 		List<String> modelValues = new ArrayList<String>();
 		for (int i = 0; i < model.getSize(); i++) {
@@ -680,6 +720,12 @@ public class SubFrame1 extends JFrame {
 
 	}
 
+	/**
+	 * This method takes a DefaultListModel and filters it.
+	 * 
+	 * @param model  represents the DefaultListModel to be used.
+	 * @param filter represents the value to be filtered.
+	 */
 	public void filterModel(DefaultListModel<String> model, String filter) {
 		List<String> modelValues = modelValues(model);
 		for (String s : modelValues) {
@@ -695,10 +741,4 @@ public class SubFrame1 extends JFrame {
 		}
 	}
 
-//	public void getHours() {
-//		My_Board board = new My_Board(cards);
-//		board.calculateAllWorkingHours();
-//		board.calculateCostTotal();
-//		System.out.println(board.getSprint1TotalWorkHours() + " - " + board.getSprint1TotalCost());
-//	}
 }

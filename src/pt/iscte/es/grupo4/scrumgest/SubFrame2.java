@@ -21,6 +21,10 @@ import java.awt.Font;
 import javax.swing.JList;
 import javax.swing.border.BevelBorder;
 
+/**
+ * @author sarag
+ *
+ */
 @SuppressWarnings("serial")
 public class SubFrame2 extends JFrame {
 	private List<Card> cards;
@@ -131,6 +135,11 @@ public class SubFrame2 extends JFrame {
 
 	}
 
+	/**
+	 * This method calculates the activities that gave rise to artifacts in the
+	 * repository, for each team member given a Map (memberCards). Then it adds the
+	 * information to the DefaultListModel.
+	 */
 	public void ActivitiesByMembers1() {
 		int numArtifacts;
 		double totalhours;
@@ -163,6 +172,11 @@ public class SubFrame2 extends JFrame {
 		}
 	}
 
+	/**
+	 * This method calculates the activities that not gave rise to artifacts in the
+	 * repository, for each team member given a Map (memberCards). Then it adds the
+	 * information to the DefaultListModel.
+	 */
 	public void ActivitiesByMembers2() {
 		int numActivities;
 		double totalhours;
@@ -193,6 +207,13 @@ public class SubFrame2 extends JFrame {
 		}
 	}
 
+	/**
+	 * This method retrieves all the Trello cards that contain an artifact and
+	 * populates a List of cards. It also calculates the total number of activities
+	 * with artifacts present in the board.
+	 * 
+	 * @return the number of artifacts.
+	 */
 	public int ActivitiesTotal1() {
 		ArtifactCards = new ArrayList<Card>();
 		int numArtifacts = 0;
@@ -208,6 +229,13 @@ public class SubFrame2 extends JFrame {
 		return numArtifacts;
 	}
 
+	/**
+	 * This method retrieves all the Trello cards that do not contain an artifact
+	 * and populates a List of cards. It also calculates the total number of
+	 * activities with no artifacts present in the board.
+	 * 
+	 * @return the number of activities without artifacts.
+	 */
 	public int ActivitiesTotal2() {
 		ActivitiesCard = new ArrayList<Card>();
 		int numActivities = 0;
@@ -223,6 +251,12 @@ public class SubFrame2 extends JFrame {
 		return numActivities;
 	}
 
+	/**
+	 * This method iterates over a List of cards that contain artifacts and
+	 * calculates the total of hours of work correspondent these activities.
+	 * 
+	 * @return the total of hours.
+	 */
 	public double HoursTotal1() {
 		double totalhours = 0;
 		for (Card card : ArtifactCards) {
@@ -238,6 +272,12 @@ public class SubFrame2 extends JFrame {
 		return (Math.round(totalhours * 100) / 100.00);
 	}
 
+	/**
+	 * This method iterates over a List of cards that do not contain artifacts and
+	 * calculates the total of hours of work correspondent these activities.
+	 * 
+	 * @return the total of hours.
+	 */
 	public double HoursTotal2() {
 		double totalhours = 0;
 		for (Card card : ActivitiesCard) {
@@ -253,14 +293,30 @@ public class SubFrame2 extends JFrame {
 		return (Math.round(totalhours * 100) / 100.00);
 	}
 
+	/**
+	 * This method calculates the cost correspondent to the value obtained in the
+	 * method HoursTotal1().
+	 * 
+	 * @return the total cost.
+	 */
 	public double costTotal1() {
 		return Math.round((HoursTotal1() * 20) * 100) / 100.00;
 	}
 
+	/**
+	 * This method calculates the cost correspondent to the value obtained in the
+	 * method HoursTotal2().
+	 * 
+	 * @return the total cost.
+	 */
 	public double costTotal2() {
 		return Math.round((HoursTotal2() * 20) * 100) / 100.00;
 	}
 
+	/**
+	 * This method updates the DefaultListModels with information about the
+	 * activities and correspondent hours of work.
+	 */
 	public void listUpdate() {
 		model1.addElement("Activities: " + ActivitiesTotal1() + " Hours: " + HoursTotal1() + "h" + " Cost: "
 				+ costTotal1() + "€");

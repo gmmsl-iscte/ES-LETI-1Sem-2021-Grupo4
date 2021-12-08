@@ -43,7 +43,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.FlowLayout;
 import java.awt.Font;
-
+/**
+ * @author sarag
+ *
+ */
 @SuppressWarnings("serial")
 public class GUI extends JFrame {
 
@@ -56,7 +59,7 @@ public class GUI extends JFrame {
 	List<TList> sprint;
 	List<Card> sprintCards;
 	List<Board> member;
-	Map<String,List<Card>> memberCards;
+	Map<String, List<Card>> memberCards;
 	Board board;
 	GHRepository repository;
 
@@ -205,6 +208,9 @@ public class GUI extends JFrame {
 
 	}
 
+	/**
+	 * This method deals with the connection to Trello.
+	 */
 	@SuppressWarnings("deprecation")
 	public void TrelloConnect() {
 		trelloApi = new TrelloImpl("d9a050a2b06b9d83d847f5145d5c9a01",
@@ -212,23 +218,36 @@ public class GUI extends JFrame {
 
 	}
 
+	/**
+	 * This method retrieves content from a specified member Trello board, such as
+	 * cards and members.
+	 */
 	public void TrelloContents() {
 		member = trelloApi.getMemberBoards("saragirao");
 		for (Board board : member) {
-			this.board=board;
+			this.board = board;
 			cards = board.fetchCards();
 			members = board.fetchMembers();
 		}
 		FetchCardsbyMember();
 	}
-	
+
+	/**
+	 * This method populates a Map (memberCards) with the member's username as key
+	 * and the member's cards as entry.
+	 */
 	public void FetchCardsbyMember() {
-		memberCards = new HashMap<String,List<Card>>();
-		for (Member id: members) {
-			memberCards.put(id.getUsername(),board.fetchMemberCards(id.getId()));
+		memberCards = new HashMap<String, List<Card>>();
+		for (Member id : members) {
+			memberCards.put(id.getUsername(), board.fetchMemberCards(id.getId()));
 		}
 	}
 
+	/**
+	 * This method deals with the GitHub connection. It requires an authentication
+	 * token to do the connection, if this token is invalid an error message is
+	 * displayed and the program is terminated.
+	 */
 	public void GitHubConnect() {
 		String token = JOptionPane.showInputDialog("Please enter your GitHub authentication token.");
 		GitHub github;
@@ -236,10 +255,9 @@ public class GUI extends JFrame {
 			github = new GitHubBuilder().withOAuthToken(token).build();
 			repository = github.getRepository("gmmsl-iscte/ES-LETI-1Sem-2021-Grupo4");
 		} catch (IOException e) {
-		JOptionPane.showMessageDialog(contentPane, "Invalid token","Warning", JOptionPane.WARNING_MESSAGE );
-		 System.exit(0);
+			JOptionPane.showMessageDialog(contentPane, "Invalid token", "Warning", JOptionPane.WARNING_MESSAGE);
+			System.exit(0);
 		}
-
 
 	}
 
@@ -251,6 +269,13 @@ public class GUI extends JFrame {
 		this.textField = textField;
 	}
 
+	/**
+	 * This method reads a file from a given path.
+	 * @param path The file's path.
+	 * @param encoding The encoding.
+	 * @return The file as a String.
+	 * @throws IOException
+	 */
 	static String readFile(String path, Charset encoding) throws IOException {
 		byte[] encoded = Files.readAllBytes(Paths.get(path));
 		return new String(encoded, encoding);
