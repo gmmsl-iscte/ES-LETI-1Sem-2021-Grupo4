@@ -159,30 +159,61 @@ public class My_Board {
 		loadCardsFromTrello();
 		calculateAllHours();
 		calculateEachSprintCost();
+		roundallthevalues();
 	}
+
+public void roundthevalues(double[] array) {
+	for (int i=0; i<array.length; i++) {
+		array[i]=Math.round(array[i]*100)/100.00;
+	}
+
+}
+
+public void roundallthevalues() {
+	roundthevalues(sprint1WorkAndPlannedHoursByMember);
+	roundthevalues(sprint2WorkAndPlannedHoursByMember);
+	roundthevalues(sprint3WorkAndPlannedHoursByMember);
+	roundthevalues(sprint1TeamCost);
+	roundthevalues(sprint2TeamCost);
+	roundthevalues(sprint3TeamCost);
 	
 	
+}
 	public void export_to_cvs() throws FileNotFoundException, UnsupportedEncodingException {
 		PrintWriter writer = new PrintWriter("C:/Users/facruz/Desktop/exporttest.txt", "UTF-8");
-		writer.println("The first line");
-		writer.println("The second line");
+		writer.println("Total work hours and cost for each Sprint by TEAM member");
+		writer.println("SPRINT,MEMBER,HOURS,COST");
+		
+		writer.println("SPRINT1,SARA,"+sprint1WorkAndPlannedHoursByMember[0]+","+sprint1TeamCost[0]);
+		writer.println("SPRINT1,FABIO,"+sprint1WorkAndPlannedHoursByMember[1]+","+sprint1TeamCost[1]);
+		writer.println("SPRINT1,GONÇALO,"+sprint1WorkAndPlannedHoursByMember[2]+","+sprint1TeamCost[2]);
+		
+		writer.println("SPRINT2,SARA,"+sprint2WorkAndPlannedHoursByMember[0]+","+sprint2TeamCost[0]);
+		writer.println("SPRINT2,FABIO,"+sprint2WorkAndPlannedHoursByMember[1]+","+sprint2TeamCost[1]);
+		writer.println("SPRINT2,GONÇALO,"+sprint2WorkAndPlannedHoursByMember[2]+","+sprint2TeamCost[2]);
+		
+		writer.println("SPRINT3,SARA,"+sprint3WorkAndPlannedHoursByMember[0]+","+sprint3TeamCost[0]);
+		writer.println("SPRINT3,FABIO,"+sprint3WorkAndPlannedHoursByMember[1]+","+sprint3TeamCost[1]);
+		writer.println("SPRINT3,GONÇALO,"+sprint3WorkAndPlannedHoursByMember[2]+","+sprint3TeamCost[2]);
+		
 		writer.close();
 	}
-//}
+}
 
 // Used for class testing
-	public static void main(String[] args) throws InterruptedException, FileNotFoundException, UnsupportedEncodingException {
-		My_Board test_board = new My_Board();
-		test_board.loadAllTheInformation();
-		
-		test_board.export_to_cvs();
-		
-		System.out.println("Sprint1");
-		test_board.caltulateTotalWorkingAndPlanedHoursPerSprintForEachMember("SPRINT1");
-		System.out.println("Sprint2");
-		test_board.caltulateTotalWorkingAndPlanedHoursPerSprintForEachMember("SPRINT2");
-		System.out.println("Sprint3");
-		test_board.caltulateTotalWorkingAndPlanedHoursPerSprintForEachMember("SPRINT3");
-		System.out.println("End of test");
-	}
-}
+//	public static void main(String[] args)
+//			throws InterruptedException, FileNotFoundException, UnsupportedEncodingException {
+//		My_Board test_board = new My_Board();
+//		test_board.loadAllTheInformation();
+//
+//		test_board.export_to_cvs();
+//
+//		System.out.println("Sprint1");
+//		test_board.caltulateTotalWorkingAndPlanedHoursPerSprintForEachMember("SPRINT1");
+//		System.out.println("Sprint2");
+//		test_board.caltulateTotalWorkingAndPlanedHoursPerSprintForEachMember("SPRINT2");
+//		System.out.println("Sprint3");
+//		test_board.caltulateTotalWorkingAndPlanedHoursPerSprintForEachMember("SPRINT3");
+//		System.out.println("End of test");
+//	}
+//}
