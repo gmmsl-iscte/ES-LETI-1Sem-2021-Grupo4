@@ -17,12 +17,22 @@ import com.julienvey.trello.domain.*;
 import javax.swing.JTextArea;
 import java.awt.Font;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.DefaultListModel;
 import javax.swing.border.BevelBorder;
 import javax.swing.ListSelectionModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
 /**
  * @author sarag
  *
@@ -243,6 +253,33 @@ public class SubFrame1 extends JFrame {
 		JLabel lblNewLabel_1 = new JLabel("Global SPRINT data");
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 11));
 		panel_4.add(lblNewLabel_1);
+
+		JButton btnNewButton = new JButton("Export to csv");
+		btnNewButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				My_Board test_board = new My_Board();
+				test_board.loadAllTheInformation();
+				try {
+					@SuppressWarnings("static-access")
+					String path = new JOptionPane()
+							.showInputDialog("Please insert the path where you'd like to save your file");
+					Path pathupdate = Paths.get(path);
+					System.out.println(pathupdate);
+					test_board.export_to_csv(pathupdate.toString());
+					System.out.println("file created");
+				} catch (FileNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (UnsupportedEncodingException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
+			}
+		});
+
+		panel_4.add(btnNewButton);
 
 		JPanel panel_5 = new JPanel();
 		panel_1.add(panel_5, BorderLayout.CENTER);
@@ -740,5 +777,4 @@ public class SubFrame1 extends JFrame {
 			}
 		}
 	}
-
 }
